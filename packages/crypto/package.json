@@ -1,0 +1,18 @@
+{
+  "name": "@workspace/crypto",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "echo 'Add build script here'",
+    "test": "vitest run",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "exports": {
+    "./sha1": "./src/sha1.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  }
+}

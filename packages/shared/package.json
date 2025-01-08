@@ -1,0 +1,19 @@
+{
+  "name": "@workspace/shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "echo 'Add build script here'",
+    "test": "vitest run",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "exports": {
+    "./types": "./src/types.ts",
+    "./utils/*": "./src/utils/*.ts"
+  },
+  "dependencies": {
+    "nanoid": "^5.0.9"
+  }
+}

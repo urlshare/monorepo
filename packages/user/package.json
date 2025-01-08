@@ -1,0 +1,20 @@
+{
+  "name": "@workspace/user",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "echo 'Add build script here'",
+    "test": "vitest run",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "exports": {
+    "./id/*": "./src/id/*.ts",
+    "./api-key/*": "./src/api-key/*.ts"
+  },
+  "dependencies": {
+    "@workspace/shared": "workspace:*",
+    "zod": "^3.24.1"
+  }
+}

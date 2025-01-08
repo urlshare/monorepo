@@ -1,22 +1,27 @@
 {
-  "name": "shadcn-ui-monorepo",
+  "name": "urlshare-monorepo",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "test": "turbo test",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "gen:workspace": "turbo gen workspace"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
-    "prettier": "^3.2.5",
-    "turbo": "^2.3.0",
-    "typescript": "5.5.4"
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "5.7.2",
+    "vitest": "^2.1.8",
+    "vitest-mock-extended": "^2.0.2"
   },
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@9.15.2",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }

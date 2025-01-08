@@ -1,5 +1,16 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "GITHUB_ID",
+    "GITHUB_SECRET",
+    "LOG_LEVEL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NODE_ENV",
+    "PORT",
+    "SKIP_ENV_VALIDATION"
+  ],
   "ui": "tui",
   "tasks": {
     "build": {
@@ -8,6 +19,9 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "test": {
       "dependsOn": ["^lint"]
     },
     "check-types": {
