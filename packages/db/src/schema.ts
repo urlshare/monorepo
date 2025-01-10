@@ -10,7 +10,6 @@ import {
   index,
   integer,
   json,
-  pgEnum,
   pgTableCreator,
   primaryKey,
   text,
@@ -34,8 +33,6 @@ import { API_KEY_LENGTH } from "@workspace/user/api-key/generate-api-key";
  */
 const createTable = pgTableCreator((name) => `urlshare_${name}`);
 
-export const roleEnum = pgEnum("role", ["NEW_USER", "USER"]);
-
 export const users = createTable("users", {
   id: char("id", { length: USER_ID_LENGTH })
     .notNull()
@@ -49,7 +46,6 @@ export const users = createTable("users", {
     .notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(() => new Date()),
   apiKey: char("api_key", { length: API_KEY_LENGTH }),
-  role: roleEnum().default("NEW_USER").notNull(),
 });
 
 export type User = InferSelectModel<typeof users>;
@@ -186,15 +182,24 @@ export const follows = createTable(
   ],
 );
 
+export type Follow = InferSelectModel<typeof follows>;
+
 export const usersRelations = relations(users, ({ one, many }) => ({
-  userProfiles: one(userProfiles),
-  usersUrls: many(usersUrls),
+  profile: one(userProfiles, {
+    fields: [users.id],
+    references: [userProfiles.userId],
+  }),
+  urls: many(usersUrls),
   categories: many(categories),
-  follows: many(follows),
+  followers: many(follows, { relationName: "followers" }),
+  following: many(follows, { relationName: "following" }),
 }));
 
 export const userProfilesRelations = relations(userProfiles, ({ one }) => ({
-  users: one(users),
+  user: one(users, {
+    fields: [userProfiles.userId],
+    references: [users.id],
+  }),
 }));
 
 export const urlsRelations = relations(urls, ({ many }) => ({
@@ -202,22 +207,45 @@ export const urlsRelations = relations(urls, ({ many }) => ({
 }));
 
 export const usersUrlsRelations = relations(usersUrls, ({ one, many }) => ({
-  users: one(users),
-  urls: one(urls),
-  userUrlsCategories: many(userUrlsCategories),
+  user: one(users, {
+    fields: [usersUrls.userId],
+    references: [users.id],
+  }),
+  url: one(urls, {
+    fields: [usersUrls.urlId],
+    references: [urls.id],
+  }),
+  categories: many(userUrlsCategories),
 }));
 
 export const categoriesRelations = relations(categories, ({ one, many }) => ({
-  users: one(users),
-  userUrlsCategories: many(userUrlsCategories),
+  user: one(users, {
+    fields: [categories.userId],
+    references: [users.id],
+  }),
+  urls: many(userUrlsCategories),
 }));
 
 export const userUrlsCategoriesRelations = relations(userUrlsCategories, ({ one }) => ({
-  usersUrls: one(usersUrls),
-  categories: one(categories),
+  usersUrl: one(usersUrls, {
+    fields: [userUrlsCategories.userUrlId],
+    references: [usersUrls.id],
+  }),
+  category: one(categories, {
+    fields: [userUrlsCategories.categoryId],
+    references: [categories.id],
+  }),
 }));
 
 export const followsRelations = relations(follows, ({ one }) => ({
-  follower: one(users),
-  following: one(users),
+  follower: one(users, {
+    fields: [follows.followerId],
+    references: [users.id],
+    relationName: "followers",
+  }),
+  following: one(users, {
+    fields: [follows.followingId],
+    references: [users.id],
+    relationName: "following",
+  }),
 }));

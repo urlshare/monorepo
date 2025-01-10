@@ -1,4 +1,3 @@
-CREATE TYPE "public"."role" AS ENUM('NEW_USER', 'USER');--> statement-breakpoint
 CREATE TABLE "urlshare_categories" (
 	"id" char(26) PRIMARY KEY NOT NULL,
 	"user_id" char(26) NOT NULL,
@@ -57,8 +56,7 @@ CREATE TABLE "urlshare_users" (
 	"user_id" uuid NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone,
-	"api_key" char(30),
-	"role" "role" DEFAULT 'NEW_USER' NOT NULL
+	"api_key" char(30)
 );
 --> statement-breakpoint
 CREATE TABLE "urlshare_users_urls" (

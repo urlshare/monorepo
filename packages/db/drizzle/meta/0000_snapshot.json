@@ -1,5 +1,5 @@
 {
-  "id": "5258862b-c294-4198-8e1b-2d7ff7813a49",
+  "id": "ca4ab1d2-4d8c-4722-b2b7-5903f850cf2c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -517,14 +517,6 @@
           "type": "char(30)",
           "primaryKey": false,
           "notNull": false
-        },
-        "role": {
-          "name": "role",
-          "type": "role",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'NEW_USER'"
         }
       },
       "indexes": {},
@@ -660,16 +652,7 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {
-    "public.role": {
-      "name": "role",
-      "schema": "public",
-      "values": [
-        "NEW_USER",
-        "USER"
-      ]
-    }
-  },
+  "enums": {},
   "schemas": {},
   "sequences": {},
   "roles": {},

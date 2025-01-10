@@ -1,7 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import * as orm from "drizzle-orm";
 import postgres from "postgres";
-export type { RowList } from "postgres";
 
 import * as schema from "./schema";
 import { env } from "./env";

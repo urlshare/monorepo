@@ -10,11 +10,11 @@
     "lint": "echo 'Add lint script here'",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio"
   },
   "exports": {
-    "./db": "./src/db.ts"
+    "./db": "./src/db.ts",
+    "./types": "./src/types.ts"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",
