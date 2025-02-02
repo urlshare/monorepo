@@ -15,10 +15,10 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "prettier": "^3.4.2",
-    "turbo": "^2.3.3",
+    "turbo": "^2.4.0",
     "typescript": "5.7.2",
-    "vitest-mock-extended": "^2.0.2",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "vitest-mock-extended": "^2.0.2"
   },
   "packageManager": "pnpm@9.15.2",
   "engines": {
