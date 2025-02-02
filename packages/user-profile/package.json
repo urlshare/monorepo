@@ -11,10 +11,17 @@
   },
   "exports": {
     "./id/*": "./src/id/*.ts",
-    "./username/*": "./src/username/*.ts"
+    "./username/*": "./src/username/*.ts",
+    "./username/ui/*": "./src/username/ui/*.tsx",
+    "./utils/*": "./src/utils/*.ts"
   },
   "dependencies": {
     "@workspace/shared": "workspace:*",
+    "@workspace/ui": "workspace:*",
+    "react": "^19.0.0",
     "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.2"
   }
 }

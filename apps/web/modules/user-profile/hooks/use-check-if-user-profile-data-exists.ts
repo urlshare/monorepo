@@ -1,4 +1,4 @@
-import { api } from "@/trpc/server";
+import { api } from "@/trpc/react";
 
 type ExistsValue = "unknown" | boolean;
 type ExistenceCheck =
@@ -15,7 +15,7 @@ export const useCheckIfUserProfileDataExists = (): ExistenceCheck => {
   // It doesn't matter if it's the private profile data or public private data is fetched.
   // It's about checking if it exists only, as both are coming from the same source
 
-  const { error, isFetched, data } = api.userProfileData.getPrivateUserProfileData.useQuery(undefined, {
+  const { error, isFetched, data } = api.userProfiles.getPrivateUserProfile.useQuery(undefined, {
     // This check is meant to be short, so no retries.
     retry: false,
   });

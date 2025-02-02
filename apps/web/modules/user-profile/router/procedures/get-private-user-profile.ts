@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 
-import { PrivateUserProfileVM, toPrivateUserProfileVM } from "../../models/private-user-profile.vm.js";
-import { protectedProcedure } from "@/server/api/trpc.js";
+import { PrivateUserProfileVM, toPrivateUserProfileVM } from "../../models/private-user-profile.vm";
+import { protectedProcedure } from "@/server/api/trpc";
 
 export const getPrivateUserProfile = protectedProcedure.query<PrivateUserProfileVM>(
   async ({ ctx: { logger, requestId, user, db } }) => {
@@ -14,22 +14,22 @@ export const getPrivateUserProfile = protectedProcedure.query<PrivateUserProfile
       where: (userProfiles, { eq }) => eq(userProfiles.userId, userId),
       columns: {
         username: true,
+        imageUrl: true,
       },
       with: {
-        users: {
+        user: {
           columns: {
-            id: true,
             apiKey: true,
           },
         },
       },
     });
 
-    if (maybeUserProfile && maybeUserProfile.users) {
+    if (maybeUserProfile && maybeUserProfile.user) {
       return toPrivateUserProfileVM({
         ...maybeUserProfile,
-        id: maybeUserProfile.users.id,
-        apiKey: maybeUserProfile.users.apiKey,
+        id: userId,
+        apiKey: maybeUserProfile.user.apiKey,
       });
     }
 

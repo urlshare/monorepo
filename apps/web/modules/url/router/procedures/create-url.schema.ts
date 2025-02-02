@@ -6,5 +6,5 @@ export type CreateUrlSchema = z.infer<typeof createUrlSchema>;
 
 export const createUrlSchema = z.object({
   url: urlSchema,
-  categoryIds: z.array(categoryIdSchema).optional().default([]),
+  categoryIds: z.array(categoryIdSchema).default([]),
 });

@@ -12,7 +12,7 @@ import { CancelAction } from "./cancel-action";
 import { StickyErrorMessage } from "./sticky-error-message";
 import { SubmitButton } from "./submit-button";
 import { api } from "@/trpc/react";
-import { CategoryVM } from "../../models/category.vm";
+import { CategoryVM } from "@workspace/app-components/category/models/category.vm";
 
 type EditCategoryProps = {
   category: CategoryVM;

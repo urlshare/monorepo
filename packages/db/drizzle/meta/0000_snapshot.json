@@ -1,5 +1,5 @@
 {
-  "id": "ca4ab1d2-4d8c-4722-b2b7-5903f850cf2c",
+  "id": "bc116d5a-ef03-4733-b5c6-2d245549614d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -16,7 +16,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "char(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -106,13 +106,13 @@
         },
         "follower_id": {
           "name": "follower_id",
-          "type": "char(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "following_id": {
           "name": "following_id",
-          "type": "char(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -283,7 +283,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "char(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -489,14 +489,8 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "char(26)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
           "type": "uuid",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true
         },
         "created_at": {
@@ -521,13 +515,13 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "urlshare_users_user_id_users_id_fk": {
-          "name": "urlshare_users_user_id_users_id_fk",
+        "urlshare_users_id_users_id_fk": {
+          "name": "urlshare_users_id_users_id_fk",
           "tableFrom": "urlshare_users",
           "tableTo": "users",
           "schemaTo": "auth",
           "columnsFrom": [
-            "user_id"
+            "id"
           ],
           "columnsTo": [
             "id"
@@ -567,7 +561,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "char(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },

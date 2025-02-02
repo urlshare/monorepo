@@ -7,7 +7,6 @@ import { USER_PROFILE_ID_LENGTH, generateUserProfileId } from "@workspace/user-p
 import { API_KEY_LENGTH, generateApiKey } from "@workspace/user/api-key/generate-api-key";
 import { USERNAME_MAX_LENGTH } from "@workspace/user-profile/username/username.schema";
 import { USER_URL_ID_SIZE, generateUserUrlId } from "@workspace/user-url/id/generate-user-url-id";
-import { USER_ID_LENGTH, generateUserId } from "@workspace/user/id/generate-user-id";
 
 describe("data lengths check", () => {
   it("if any data's length changes, this test must fail, as those sizes are used in schema", () => {
@@ -31,8 +30,5 @@ describe("data lengths check", () => {
 
     expect(generateUserUrlId()).toHaveLength(30);
     expect(USER_URL_ID_SIZE).toEqual(30);
-
-    expect(generateUserId()).toHaveLength(26);
-    expect(USER_ID_LENGTH).toEqual(26);
   });
 });

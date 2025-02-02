@@ -2,7 +2,7 @@ import { Checkbox } from "@workspace/ui/components/checkbox";
 import { cn } from "@workspace/ui/lib/utils";
 import React, { FC } from "react";
 
-import { CategoryVM } from "../../models/category.vm";
+import { CategoryVM } from "@workspace/app-components/category/models/category.vm";
 
 type CategoryPickerCategory = CategoryVM & { selected: boolean };
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ApiKeySchema, apiKeySchema } from "./api-key.schema.js";
+import { ApiKey, apiKeySchema } from "./api-key.schema.js";
 import { SafeParseError, SafeParseSuccess } from "zod";
 import { API_KEY_ALPHABET, generateApiKey } from "./generate-api-key.js";
 
@@ -15,11 +15,11 @@ describe("apiKeySchema", () => {
 
     expect(() => apiKeySchema.parse(exactLengthApiKey)).not.toThrow();
 
-    const tooShortResult = apiKeySchema.safeParse(tooShortApiKey) as SafeParseError<ApiKeySchema>;
+    const tooShortResult = apiKeySchema.safeParse(tooShortApiKey) as SafeParseError<ApiKey>;
     expect(tooShortResult.success).toEqual(false);
     expect(tooShortResult.error.format()._errors).toContain("API Key must be exactly 30 characters long.");
 
-    const tooLongResult = apiKeySchema.safeParse(tooLongApiKey) as SafeParseError<ApiKeySchema>;
+    const tooLongResult = apiKeySchema.safeParse(tooLongApiKey) as SafeParseError<ApiKey>;
     expect(tooLongResult.success).toEqual(false);
     expect(tooLongResult.error.format()._errors).toContain("API Key must be exactly 30 characters long.");
   });
@@ -32,7 +32,7 @@ describe("apiKeySchema", () => {
     const invalidCharactersExamples = ["ą".repeat(30), "-".repeat(30)];
 
     invalidCharactersExamples.forEach((apiKey) => {
-      const result = apiKeySchema.safeParse(apiKey) as SafeParseError<ApiKeySchema>;
+      const result = apiKeySchema.safeParse(apiKey) as SafeParseError<ApiKey>;
 
       expect(result.success).toEqual(false);
       expect(result.error.format()._errors).toContain(`Only ${API_KEY_ALPHABET} characters allowed.`);
@@ -50,7 +50,7 @@ describe("apiKeySchema", () => {
     ];
 
     apiKeysWithSpacesAroundThem.forEach((apiKeyWithSpaces) => {
-      const result = apiKeySchema.safeParse(apiKeyWithSpaces) as SafeParseSuccess<ApiKeySchema>;
+      const result = apiKeySchema.safeParse(apiKeyWithSpaces) as SafeParseSuccess<ApiKey>;
 
       expect(result.data).toEqual(apiKey);
     });

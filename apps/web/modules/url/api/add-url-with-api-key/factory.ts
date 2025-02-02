@@ -48,7 +48,7 @@ export const addUrlWithApiKeyFactory: AddUrlWithApiKeyFactory =
       return;
     }
 
-    const userId = maybeUser.userId;
+    const userId = maybeUser.id;
     const bodyResult = addUrlWithApiKeyHandlerBodyPayloadSchema.safeParse(req.body);
 
     if (!bodyResult.success) {

@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 
-import { updateUserSchema } from "./update-user.schema.js";
-import { protectedProcedure } from "@/server/api/trpc.js";
+import { updateUserSchema } from "./update-user.schema";
+import { protectedProcedure } from "@/server/api/trpc";
 import { orm, schema } from "@workspace/db/db";
 
 export const updateUser = protectedProcedure

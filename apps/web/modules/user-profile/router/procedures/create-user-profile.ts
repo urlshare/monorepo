@@ -1,9 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { orm, schema } from "@workspace/db/db";
 
-import { normalizeUsername } from "../../utils/normalize-username.js";
-import { createUserProfileSchema } from "./create-user-profile.schema.js";
-import { protectedProcedure } from "@/server/api/trpc.js";
+import { createUserProfileSchema } from "./create-user-profile.schema";
+import { protectedProcedure } from "@/server/api/trpc";
+import { normalizeUsername } from "@workspace/user-profile/utils/normalize-username";
 
 export const createUserProfile = protectedProcedure
   .input(createUserProfileSchema)
@@ -33,7 +33,6 @@ export const createUserProfile = protectedProcedure
       await tx
         .update(schema.users)
         .set({
-          role: "USER",
           apiKey: input.apiKey,
         })
         .where(orm.eq(schema.users.id, userId));

@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
 import { env } from "@/env";
 
 export async function updateSession(request: NextRequest) {
@@ -32,9 +33,18 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (request.nextUrl.pathname.startsWith("/settings") && !user) {
+  const pathname = request.nextUrl.pathname;
+
+  if (pathname.startsWith("/settings") && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = "/auth/sign-in";
+
+    return NextResponse.redirect(url);
+  }
+
+  if (pathname.startsWith("/auth/sign-in") && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
 
     return NextResponse.redirect(url);
   }

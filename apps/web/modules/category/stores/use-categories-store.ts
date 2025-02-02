@@ -1,6 +1,5 @@
 import { create } from "zustand";
-
-import { CategoryVM } from "../models/category.vm";
+import { CategoryVM } from "@workspace/app-components/category/models/category.vm";
 
 interface CategoriesState {
   categories: CategoryVM[];

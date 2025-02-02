@@ -6,7 +6,7 @@ import { Save } from "lucide-react";
 import React, { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { CategoryVM } from "../../models/category.vm";
+import { CategoryVM } from "@workspace/app-components/category/models/category.vm";
 import { UpdateCategorySchema, updateCategorySchema } from "../../router/procedures/update-category.schema";
 import { ActionPending } from "./action-pending";
 import { CancelAction } from "./cancel-action";

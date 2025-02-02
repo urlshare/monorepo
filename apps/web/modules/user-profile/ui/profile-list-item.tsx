@@ -5,7 +5,7 @@ import { FC } from "react";
 
 import { FollowingBadge } from "./following-badge.js";
 import { FollowsMeBadge } from "./follows-me-badge.js";
-import { Card } from "@workspace/ui/components/card.jsx";
+import { Card } from "@workspace/ui/components/card";
 import { UserImage } from "@/modules/user/ui/user-image.jsx";
 
 export type ProfileListItemProps = {

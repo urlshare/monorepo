@@ -124,15 +124,15 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
 const isAuthenticated = t.middleware(async ({ ctx, next }) => {
-  const { data } = await ctx.serverClient.auth.getSession();
+  const { data } = await ctx.serverClient.auth.getUser();
 
-  if (!data.session?.user) {
+  if (!data.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
   return next({
     ctx: {
-      user: data.session.user,
+      user: data.user,
     },
   });
 });

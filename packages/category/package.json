@@ -10,10 +10,10 @@
     "lint": "eslint . --max-warnings 0"
   },
   "exports": {
-    "./id/*": "./src/id/*.ts",
-    "./name/*": "./src/name/*.ts"
+    "./*": "./src/*.ts"
   },
   "dependencies": {
+    "@workspace/db": "workspace:*",
     "@workspace/shared": "workspace:*",
     "zod": "^3.24.1"
   }

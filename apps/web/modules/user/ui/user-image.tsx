@@ -33,6 +33,7 @@ export const UserImage: FC<UserImageProps> = ({ username, imageUrl, size = "smal
           "rounded-full p-1 text-gray-400 ring-slate-400 hover:ring-1",
           className,
         )}
+        size={12}
       />
     </span>
   );

@@ -3,7 +3,7 @@ import { Settings } from "lucide-react";
 import Link from "next/link";
 import React, { FC } from "react";
 
-import { CategoryVM } from "../../models/category.vm";
+import { CategoryVM } from "@workspace/app-components/category/models/category.vm";
 import { CategoryPickerCategoriesList } from "./category-picker-categories-list";
 
 type CategoryPickerProps = {

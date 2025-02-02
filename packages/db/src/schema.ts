@@ -18,11 +18,10 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { USERNAME_MAX_LENGTH } from "@workspace/user-profile/username/username.schema";
+import { USERNAME_MAX_LENGTH } from "@workspace/user-profile/username/schemas/username.schema";
 import { CATEGORY_ID_LENGTH, generateCategoryId } from "@workspace/category/id/generate-category-id";
 import { CATEGORY_NAME_MAX_LENGTH } from "@workspace/category/name/category-name.schema";
 import { generateUserUrlId, USER_URL_ID_SIZE } from "@workspace/user-url/id/generate-user-url-id";
-import { generateUserId, USER_ID_LENGTH } from "@workspace/user/id/generate-user-id";
 import { API_KEY_LENGTH } from "@workspace/user/api-key/generate-api-key";
 
 /**
@@ -34,12 +33,9 @@ import { API_KEY_LENGTH } from "@workspace/user/api-key/generate-api-key";
 const createTable = pgTableCreator((name) => `urlshare_${name}`);
 
 export const users = createTable("users", {
-  id: char("id", { length: USER_ID_LENGTH })
+  id: uuid("id")
     .notNull()
     .primaryKey()
-    .$defaultFn(() => generateUserId()),
-  userId: uuid("user_id")
-    .notNull()
     .references(() => authUsers.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -59,7 +55,7 @@ export const userProfiles = createTable("user_profiles", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(() => new Date()),
-  userId: char("user_id", { length: USER_ID_LENGTH })
+  userId: uuid("user_id")
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: "cascade" }),
@@ -104,7 +100,7 @@ export const usersUrls = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(() => new Date()),
-    userId: char("user_id", { length: USER_ID_LENGTH })
+    userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     urlId: char("url_id", { length: URL_ID_LENGTH })
@@ -124,7 +120,7 @@ export const categories = createTable(
       .notNull()
       .primaryKey()
       .$defaultFn(() => generateCategoryId()),
-    userId: char("user_id", { length: USER_ID_LENGTH })
+    userId: uuid("user_id")
       .notNull()
       .references(() => users.id),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -165,10 +161,10 @@ export const follows = createTable(
   "follows",
   {
     id: bigserial("id", { mode: "number" }).notNull().primaryKey(),
-    followerId: char("follower_id", { length: USER_ID_LENGTH })
+    followerId: uuid("follower_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    followingId: char("following_id", { length: USER_ID_LENGTH })
+    followingId: uuid("following_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at", { withTimezone: true })

@@ -20,7 +20,7 @@ This will place the ui components in the `packages/ui/src/components` directory.
 
 ## Tailwind
 
-Your `tailwind.config.ts` and `globals.css` are already set up to use the components from the `ui` package.
+Your `tailwind.config.js` and `globals.css` are already set up to use the components from the `ui` package.
 
 ## Using components
 

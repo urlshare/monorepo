@@ -1,6 +1,6 @@
-import { protectedProcedure } from "@/server/api/trpc.js";
-import { normalizeUsername } from "../../utils/normalize-username.js";
-import { usernameCheckSchema } from "./username-check.schema.js";
+import { protectedProcedure } from "@/server/api/trpc";
+import { usernameCheckSchema } from "./username-check.schema";
+import { normalizeUsername } from "@workspace/user-profile/utils/normalize-username";
 
 export const usernameCheck = protectedProcedure
   .input(usernameCheckSchema)
@@ -14,7 +14,7 @@ export const usernameCheck = protectedProcedure
     const match = await db.query.userProfiles.findFirst({
       where: (userProfiles, { eq }) => eq(userProfiles.usernameNormalized, usernameNormalized),
     });
-    const usernameAvailable = match === null;
+    const usernameAvailable = match === undefined;
 
     logger.info({ requestId, path, username, usernameAvailable }, "Username availability checked.");
 

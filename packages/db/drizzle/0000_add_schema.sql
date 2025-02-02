@@ -1,6 +1,6 @@
 CREATE TABLE "urlshare_categories" (
 	"id" char(26) PRIMARY KEY NOT NULL,
-	"user_id" char(26) NOT NULL,
+	"user_id" uuid NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone,
 	"name" varchar(30) NOT NULL,
@@ -10,8 +10,8 @@ CREATE TABLE "urlshare_categories" (
 --> statement-breakpoint
 CREATE TABLE "urlshare_follows" (
 	"id" bigserial PRIMARY KEY NOT NULL,
-	"follower_id" char(26) NOT NULL,
-	"following_id" char(26) NOT NULL,
+	"follower_id" uuid NOT NULL,
+	"following_id" uuid NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	CONSTRAINT "urlshare_follows_follower_id_following_id_unique" UNIQUE("follower_id","following_id")
 );
@@ -30,7 +30,7 @@ CREATE TABLE "urlshare_user_profiles" (
 	"id" char(29) PRIMARY KEY NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone,
-	"user_id" char(26) NOT NULL,
+	"user_id" uuid NOT NULL,
 	"username" varchar(15) NOT NULL,
 	"username_normalized" varchar(15) NOT NULL,
 	"image_url" text,
@@ -52,8 +52,7 @@ CREATE TABLE "urlshare_user_urls_categories" (
 );
 --> statement-breakpoint
 CREATE TABLE "urlshare_users" (
-	"id" char(26) PRIMARY KEY NOT NULL,
-	"user_id" uuid NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone,
 	"api_key" char(30)
@@ -63,7 +62,7 @@ CREATE TABLE "urlshare_users_urls" (
 	"id" char(30) PRIMARY KEY NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone,
-	"user_id" char(26) NOT NULL,
+	"user_id" uuid NOT NULL,
 	"url_id" char(26) NOT NULL,
 	"likes_count" integer DEFAULT 0 NOT NULL
 );
@@ -74,7 +73,7 @@ ALTER TABLE "urlshare_follows" ADD CONSTRAINT "urlshare_follows_following_id_url
 ALTER TABLE "urlshare_user_profiles" ADD CONSTRAINT "urlshare_user_profiles_user_id_urlshare_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."urlshare_users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "urlshare_user_urls_categories" ADD CONSTRAINT "urlshare_user_urls_categories_user_url_id_urlshare_users_urls_id_fk" FOREIGN KEY ("user_url_id") REFERENCES "public"."urlshare_users_urls"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "urlshare_user_urls_categories" ADD CONSTRAINT "urlshare_user_urls_categories_category_id_urlshare_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."urlshare_categories"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "urlshare_users" ADD CONSTRAINT "urlshare_users_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "urlshare_users" ADD CONSTRAINT "urlshare_users_id_users_id_fk" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "urlshare_users_urls" ADD CONSTRAINT "urlshare_users_urls_user_id_urlshare_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."urlshare_users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "urlshare_users_urls" ADD CONSTRAINT "urlshare_users_urls_url_id_urlshare_urls_id_fk" FOREIGN KEY ("url_id") REFERENCES "public"."urlshare_urls"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "urlshare_categories_user_id_index" ON "urlshare_categories" USING btree ("user_id");--> statement-breakpoint

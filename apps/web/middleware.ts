@@ -2,6 +2,7 @@ import { type NextRequest } from "next/server";
 import { updateSession } from "@/supabase/utils/middleware";
 
 export async function middleware(request: NextRequest) {
+  // TODO: check if this is required per every request matching matchers
   return await updateSession(request);
 }
 

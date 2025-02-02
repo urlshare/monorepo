@@ -1,7 +1,7 @@
 import z from "zod";
-import { API_KEY_ALPHABET, API_KEY_LENGTH } from "./generate-api-key.js";
+import { API_KEY_ALPHABET, API_KEY_LENGTH } from "./generate-api-key";
 
-export type ApiKeySchema = z.infer<typeof apiKeySchema>;
+export type ApiKey = z.infer<typeof apiKeySchema>;
 
 export const apiKeySchema = z
   .string()

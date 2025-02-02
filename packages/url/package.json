@@ -10,8 +10,7 @@
     "lint": "eslint . --max-warnings 0"
   },
   "exports": {
-    "./id/*": "./src/id/*.ts",
-    "./url/*": "./src/url/*.ts"
+    "./*": "./src/*.ts"
   },
   "dependencies": {
     "@workspace/shared": "workspace:*",
