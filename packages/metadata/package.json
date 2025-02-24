@@ -10,7 +10,6 @@
     "lint": "eslint . --max-warnings 0"
   },
   "exports": {
-    "./fetch-metadata": "./src/fetch-metadata.ts",
     "./types": "./src/types.ts",
     "./compression": "./src/compression.ts"
   },

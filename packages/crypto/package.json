@@ -10,7 +10,7 @@
     "lint": "eslint . --max-warnings 0"
   },
   "exports": {
-    "./sha1": "./src/sha1.ts"
+    "./hash": "./src/hash.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.2"

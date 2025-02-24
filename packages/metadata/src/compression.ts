@@ -1,103 +1,56 @@
-import { Metadata } from "./types";
+import {
+  metadataDataSchema as v1metadataDataSchema,
+  compressMetadataData as v1compressMetadataData,
+  decompressMetadataData as v1decompressMetadataData,
+  type MetadataData as V1MetadataData,
+  type CompressedMetadataData as V1CompressedMetadataData,
+} from "./schemas/v1.schema";
 
-export interface CompressedMetadata {
-  // audio?: string;
-  a?: string;
-  // author?: string;
-  b?: string;
-  // copyright?: string;
-  c?: string;
-  // description?: string;
-  d?: string;
-  // email?: string;
-  e?: string;
-  // facebook?: string;
-  f?: string;
-  // icon?: string;
-  g?: string;
-  // image?: string;
-  h?: string;
-  // keywords?: ReadonlyArray<string>;
-  i?: ReadonlyArray<string>;
-  // language?: string;
-  j?: string;
-  // modified?: string;
-  k?: string;
-  // provider?: string;
-  l?: string;
-  // published?: string;
-  m?: string;
-  // robots?: ReadonlyArray<string>;
-  n?: ReadonlyArray<string>;
-  // section?: string;
-  o?: string;
-  // title?: string;
-  p?: string;
-  // twitter?: string;
-  q?: string;
-  // type?: string;
-  r?: string;
-  // url?: string;
-  s?: string;
-  // video?: string;
-  t?: string;
-  // contentType?: string;
-  u?: string;
-}
-
-export const compressMapper: Record<keyof Metadata, keyof CompressedMetadata> = {
-  audio: "a",
-  author: "b",
-  copyright: "c",
-  description: "d",
-  email: "e",
-  facebook: "f",
-  icon: "g",
-  image: "h",
-  keywords: "i",
-  language: "j",
-  modified: "k",
-  provider: "l",
-  published: "m",
-  robots: "n",
-  section: "o",
-  title: "p",
-  twitter: "q",
-  type: "r",
-  url: "s",
-  video: "t",
-  contentType: "u",
+type Version = "v1";
+type Data = {
+  v1: V1MetadataData;
+};
+type CompressedData = {
+  v1: V1CompressedMetadataData;
+};
+type Metadata<V extends Version> = {
+  version: V;
+  data: Data[V];
+};
+type CompressedMetadata<V extends Version> = {
+  version: V;
+  data: CompressedData[V];
 };
 
-const decompressMapper = Object.entries(compressMapper).reduce(
-  (acc, [key, val]) => {
-    return { ...acc, [val]: key };
-  },
-  {} as Record<keyof CompressedMetadata, keyof Metadata>,
-);
-
-export const compressMetadata = (metadata: Metadata) => {
-  return Object.entries(metadata).reduce((acc, [key, val]) => {
-    if (val === undefined) {
-      return acc;
+export const getSchema = (version: Version) => {
+  switch (version) {
+    case "v1": {
+      return v1metadataDataSchema;
     }
-
-    const newKey = compressMapper[key as keyof Metadata];
-
-    return {
-      ...acc,
-      [newKey]: val,
-    };
-  }, {} as CompressedMetadata);
+  }
 };
 
-export const decompressMetadata = (compressedMetadata: CompressedMetadata) => {
-  return Object.entries(compressedMetadata).reduce((acc, [key, val]) => {
-    const newKey = decompressMapper[key as keyof CompressedMetadata];
+export const compressMetadata = (
+  version: Version,
+  data: Record<string, unknown>,
+): CompressedMetadata<typeof version> => {
+  switch (version) {
+    case "v1": {
+      return {
+        version,
+        data: v1compressMetadataData(v1metadataDataSchema.parse(data)),
+      };
+    }
+  }
+};
 
-    return {
-      ...acc,
-      [newKey]: val,
-    };
-  }, {} as Metadata);
+export const decompressMetadata = ({ version, data }: CompressedMetadata<Version>): Metadata<typeof version> => {
+  switch (version) {
+    case "v1": {
+      return {
+        version,
+        data: v1decompressMetadataData(data),
+      };
+    }
+  }
 };

@@ -27,6 +27,7 @@
     "drizzle-kit": "^0.30.1",
     "@types/node": "^22.10.2",
     "@workspace/category": "workspace:*",
+    "@workspace/feed": "workspace:*",
     "@workspace/request": "workspace:*",
     "@workspace/url": "workspace:*",
     "@workspace/user": "workspace:*",

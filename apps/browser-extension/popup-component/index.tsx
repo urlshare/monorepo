@@ -2,16 +2,16 @@ import "../styles/globals.css"
 
 import React, { useEffect, useState } from "react"
 
+import { scrapMetadata, type ScrappedMetadata } from "@workspace/metadata-scrapper/scrap-metadata"
+
 import { AddUrl } from "./add-url"
 import { API_KEY_STORAGE_KEY } from "./constants/storage"
 import { useSyncStorage } from "./hooks/use-sync-storage"
 import { Settings } from "./settings"
 import { SettingsButton } from "./settings/settings-button"
 
-const fetchHTML = async () => {
+const fetchHtml = async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
-
-  console.log("tab id:", tab?.id)
 
   if (!tab?.id) return
 
@@ -27,22 +27,8 @@ export const PopupComponent = () => {
   const [canAddUrls, setCanAddUrls] = useState(false)
   const [showSettings, setShowSettings] = useState(true)
   const [currentUrl, setCurrentUrl] = useState("")
+  const [metadata, setMetadata] = useState<ScrappedMetadata | null>(null)
   const [apiKey, setApiKey] = useSyncStorage(API_KEY_STORAGE_KEY, "")
-
-  useEffect(() => {
-    fetchHTML().then((htmlString) => {
-      const count = htmlString.split('class="markdown').length
-
-      console.log("markdown class elements:", count)
-    })
-
-    if (apiKey.trim() !== "") {
-      const canAddUrls = apiKey !== ""
-
-      setCanAddUrls(canAddUrls)
-      setShowSettings(!canAddUrls)
-    }
-  }, [apiKey])
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -53,6 +39,33 @@ export const PopupComponent = () => {
       }
     })
   }, [])
+
+  useEffect(() => {
+    if (apiKey.trim() !== "") {
+      const canAddUrls = apiKey !== ""
+
+      setCanAddUrls(canAddUrls)
+      setShowSettings(!canAddUrls)
+    }
+  }, [apiKey])
+
+  useEffect(() => {
+    if (canAddUrls && currentUrl) {
+      setMetadata(null)
+
+      // TODO: memoize this if needed
+      fetchHtml()
+        .then((html) => {
+          const document = new DOMParser().parseFromString(html, "text/html")
+
+          return scrapMetadata({
+            document,
+            url: currentUrl
+          })
+        })
+        .then(setMetadata)
+    }
+  }, [canAddUrls, currentUrl])
 
   const saveApiKey = (apiKey: string) => {
     setCanAddUrls(apiKey !== "")
@@ -74,7 +87,7 @@ export const PopupComponent = () => {
       {!showSettings && canAddUrls && currentUrl && (
         <>
           <SettingsButton className="absolute right-2" onClick={() => setShowSettings(true)} />
-          <AddUrl apiKey={apiKey} url={currentUrl} />
+          <AddUrl apiKey={apiKey} url={currentUrl} metadata={metadata} />
         </>
       )}
     </div>

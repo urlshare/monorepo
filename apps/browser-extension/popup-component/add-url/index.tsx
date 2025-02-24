@@ -1,9 +1,11 @@
+import { Check } from "lucide-react"
+import React, { useCallback, useEffect, useState, type FC } from "react"
+
 import type { CategoryVM } from "@workspace/category/models/category.vm"
+import type { ScrappedMetadata } from "@workspace/metadata-scrapper/scrap-metadata"
 import { Button } from "@workspace/ui/components/button"
 import { LoadingIndicator } from "@workspace/ui/components/loading-indicator"
 import { Separator } from "@workspace/ui/components/separator"
-import { Check } from "lucide-react"
-import React, { useCallback, useEffect, useState, type FC } from "react"
 
 import { CategoryPicker } from "~popup-component/category-picker"
 
@@ -16,9 +18,10 @@ import { useSyncStorage } from "../hooks/use-sync-storage"
 type AddUrlProps = {
   apiKey: string
   url: string
+  metadata: ScrappedMetadata | null
 }
 
-export const AddUrl: FC<AddUrlProps> = ({ apiKey, url }) => {
+export const AddUrl: FC<AddUrlProps> = ({ apiKey, url, metadata }) => {
   const [categories, setCategories] = useSyncStorage<CategoryVM[]>(CATEGORIES_STORAGE_KEY, [])
   const { mutate, isPending, isSuccess, isError } = useAddUrl(apiKey)
   const { data, isSuccess: categoriesFetched, refetch } = useCategories(apiKey)
@@ -44,8 +47,8 @@ export const AddUrl: FC<AddUrlProps> = ({ apiKey, url }) => {
   )
 
   const addUrl = useCallback(() => {
-    mutate({ url, categoryIds: selectedCategories })
-  }, [mutate, url, selectedCategories])
+    mutate({ metadata, categoryIds: selectedCategories })
+  }, [mutate, metadata, selectedCategories])
 
   return (
     <div className="flex flex-col gap-4 p-2">
@@ -69,14 +72,14 @@ export const AddUrl: FC<AddUrlProps> = ({ apiKey, url }) => {
       {isError && <div>Could not add, try again.</div>}
 
       <div className="flex items-center gap-2">
-        <Button onClick={addUrl} disabled={isPending}>
+        <Button onClick={addUrl} disabled={isPending || metadata === null}>
           Add URL
         </Button>
         {isPending ? <LoadingIndicator label="Adding the URL" className="text-gray-500" size={18} /> : null}
         {isSuccess ? <Check className="text-green-700" /> : null}
       </div>
 
-      <p className="overflow-hidden text-ellipsis text-xs font-extralight">DD {url}</p>
+      <p className="overflow-hidden text-ellipsis text-xs font-extralight">{url}</p>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { sha1 } from "@workspace/crypto/sha1";
+import { sha1 } from "@workspace/crypto/hash";
 import { schema } from "@workspace/db/db";
 import { compressMetadata } from "@workspace/metadata/compression";
 import { type Metadata } from "@workspace/metadata/types";

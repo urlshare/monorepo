@@ -1,0 +1,24 @@
+{
+  "name": "@workspace/metadata-scrapper",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "echo 'Add build script here'",
+    "test": "vitest run",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "exports": {
+    "./scrap-metadata": "./src/index.ts"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "@types/lodash": "^4.17.15",
+    "jsdom": "^26.0.0"
+  }
+}

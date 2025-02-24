@@ -1,20 +1,21 @@
-import React, { type FC } from "react";
-import type { CategoryVM } from "@workspace/category/models/category.vm";
-import { cn } from "@workspace/ui/lib/utils";
-import { Checkbox } from "@workspace/ui/components/checkbox";
+import React, { type FC } from "react"
 
-type CategoryPickerCategory = CategoryVM & { selected: boolean };
+import type { CategoryVM } from "@workspace/category/models/category.vm"
+import { Checkbox } from "@workspace/ui/components/checkbox"
+import { cn } from "@workspace/ui/lib/utils"
+
+type CategoryPickerCategory = CategoryVM & { selected: boolean }
 
 type CategoryPickerCategoriesListProps = {
-  className?: string;
-  categories: ReadonlyArray<CategoryPickerCategory>;
-  onCategorySelectionChange: (id: CategoryVM["id"]) => void;
-};
+  className?: string
+  categories: ReadonlyArray<CategoryPickerCategory>
+  onCategorySelectionChange: (id: CategoryVM["id"]) => void
+}
 
 export const CategoryPickerCategoriesList: FC<CategoryPickerCategoriesListProps> = ({
   className,
   categories,
-  onCategorySelectionChange,
+  onCategorySelectionChange
 }) => {
   return (
     <ul className={cn("flex flex-col gap-2", className)}>
@@ -29,8 +30,7 @@ export const CategoryPickerCategoriesList: FC<CategoryPickerCategoriesListProps>
             />
             <label
               htmlFor={id}
-              className="flex cursor-pointer gap-2 text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
+              className="flex cursor-pointer gap-2 text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               {name}
               {urlsCount > 0 ? (
                 <span title="Number of URLs for this category" className="font-extralight text-slate-600">
@@ -39,8 +39,8 @@ export const CategoryPickerCategoriesList: FC<CategoryPickerCategoriesListProps>
               ) : null}
             </label>
           </li>
-        );
+        )
       })}
     </ul>
-  );
-};
+  )
+}

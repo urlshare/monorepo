@@ -6,12 +6,14 @@ import { authUsers } from "drizzle-orm/supabase";
 import {
   bigint,
   bigserial,
+  boolean,
   char,
   index,
   integer,
   json,
   pgTableCreator,
   primaryKey,
+  smallint,
   text,
   timestamp,
   unique,
@@ -23,6 +25,7 @@ import { CATEGORY_ID_LENGTH, generateCategoryId } from "@workspace/category/id/g
 import { CATEGORY_NAME_MAX_LENGTH } from "@workspace/category/name/category-name.schema";
 import { generateUserUrlId, USER_URL_ID_SIZE } from "@workspace/user-url/id/generate-user-url-id";
 import { API_KEY_LENGTH } from "@workspace/user/api-key/generate-api-key";
+import { generateFeedId, FEED_ID_LENGTH } from "@workspace/feed/id/generate-feed-id";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -32,6 +35,7 @@ import { API_KEY_LENGTH } from "@workspace/user/api-key/generate-api-key";
  */
 const createTable = pgTableCreator((name) => `urlshare_${name}`);
 
+// TODO: add role, as it will be used for basic/pro users
 export const users = createTable("users", {
   id: uuid("id")
     .notNull()
@@ -81,13 +85,48 @@ export const urls = createTable("urls", {
     .notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(() => new Date()),
   url: text("url").notNull(),
-  // Reserved for SHA1 hash - required as long URLs will create too long index keys
-  // or even long enough ones that will not work with some databases
-  urlHash: char("url_hash", { length: 40 }).unique().notNull(),
+  // This is a hash of url, title, image url. Even it image url is not present, hash will be created without it
+  compoundHash: char("compound_hash", { length: 64 }).unique().notNull(),
   metadata: json("metadata").default({}).notNull(),
 });
 
 export type Url = InferSelectModel<typeof urls>;
+
+export const urlHashes = createTable(
+  "url_hashes",
+  {
+    compoundHash: char("compound_hash", { length: 64 })
+      .primaryKey()
+      .notNull()
+      .references(() => urls.compoundHash, { onDelete: "cascade" }),
+    // Hash of the URL alone, must not be unique, as the compound hash is the unique one
+    urlHash: char("url_hash", { length: 40 }).notNull(),
+    // How many times urlHash with combination of compoundHash has been used.
+    // When the same urlHash is used with different compoundHash, it means the same URL
+    // has different metadata (that are used to generate compoundHash), and we can tell
+    // that a URL (urlHash) has been shared multiple times differently.
+    // Ideally, we want every unique urlHash value appearing only once in this table.
+    // If it will be more, use url_hashes_compound_hashes_counts for the count.
+    count: integer("count").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => [index().on(table.urlHash), unique().on(table.compoundHash, table.urlHash)],
+);
+
+export type UrlHashes = InferSelectModel<typeof urlHashes>;
+
+// This table is created so that counting the number of compound hashes for a urlHash is faster,
+// as it is stored and updated in this table. Therefore it will be easy to find any urlHash
+// that is used multiple times with different compound hashes.
+// Use url_hashes table for the actual data, in combination with urls table.
+export const urlHashesCompoundHashesCounts = createTable("url_hashes_compound_hashes_counts", {
+  urlHash: char("url_hash", { length: 40 }).primaryKey().notNull(),
+  compoundHashesCount: integer("compound_hashes_count").default(0).notNull(),
+});
+
+export type UrlHashCompoundHashesCount = InferSelectModel<typeof urlHashesCompoundHashesCounts>;
 
 export const usersUrls = createTable(
   "users_urls",
@@ -144,6 +183,7 @@ export const userUrlsCategories = createTable(
     categoryId: char("category_id", { length: CATEGORY_ID_LENGTH })
       .notNull()
       .references(() => categories.id, { onDelete: "cascade" }),
+    categoryOrder: smallint("category_order").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -160,6 +200,9 @@ export type UserUrlCategory = InferSelectModel<typeof userUrlsCategories>;
 export const follows = createTable(
   "follows",
   {
+    // Needed for future queueing of follow/unfollow actions
+    // This id, being sequential, is a unique value for each follower.
+    // createdAt might not be unique, as multiple follows can happen at the same time.
     id: bigserial("id", { mode: "number" }).notNull().primaryKey(),
     followerId: uuid("follower_id")
       .notNull()
@@ -180,6 +223,39 @@ export const follows = createTable(
 
 export type Follow = InferSelectModel<typeof follows>;
 
+export const feeds = createTable(
+  "feeds",
+  {
+    id: char("id", { length: FEED_ID_LENGTH })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => generateFeedId()),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    userUrlId: char("user_url_id", { length: USER_URL_ID_SIZE })
+      .notNull()
+      .references(() => usersUrls.id, { onDelete: "cascade" }),
+    liked: boolean("liked").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(() => new Date()),
+  },
+  (table) => [index().on(table.userId), index().on(table.userUrlId)],
+);
+
+export type Feed = InferSelectModel<typeof feeds>;
+
+export const feedsRelations = relations(feeds, ({ one }) => ({
+  users: one(users, {
+    fields: [feeds.userId],
+    references: [users.id],
+  }),
+  userUrls: one(usersUrls, {
+    fields: [feeds.userUrlId],
+    references: [usersUrls.id],
+  }),
+}));
+
 export const usersRelations = relations(users, ({ one, many }) => ({
   profile: one(userProfiles, {
     fields: [users.id],
@@ -189,6 +265,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   categories: many(categories),
   followers: many(follows, { relationName: "followers" }),
   following: many(follows, { relationName: "following" }),
+  feeds: many(feeds),
 }));
 
 export const userProfilesRelations = relations(userProfiles, ({ one }) => ({
@@ -198,8 +275,19 @@ export const userProfilesRelations = relations(userProfiles, ({ one }) => ({
   }),
 }));
 
-export const urlsRelations = relations(urls, ({ many }) => ({
+export const urlsRelations = relations(urls, ({ one, many }) => ({
   usersUrls: many(usersUrls),
+  urlHashes: one(urlHashes, {
+    fields: [urls.compoundHash],
+    references: [urlHashes.compoundHash],
+  }),
+}));
+
+export const urlHashesRelations = relations(urlHashes, ({ one }) => ({
+  url: one(urls, {
+    fields: [urlHashes.compoundHash],
+    references: [urls.compoundHash],
+  }),
 }));
 
 export const usersUrlsRelations = relations(usersUrls, ({ one, many }) => ({
@@ -212,6 +300,7 @@ export const usersUrlsRelations = relations(usersUrls, ({ one, many }) => ({
     references: [urls.id],
   }),
   categories: many(userUrlsCategories),
+  feeds: many(feeds),
 }));
 
 export const categoriesRelations = relations(categories, ({ one, many }) => ({
