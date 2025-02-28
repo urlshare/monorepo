@@ -40,6 +40,8 @@ export async function POST(request: Request) {
     const data = bodyResult.data;
     let userUrl: UserUrl;
 
+    console.log("data", data);
+
     try {
       userUrl = await addUrl({ categoryIds: data.categoryIds, metadata: data.metadata, userId });
 

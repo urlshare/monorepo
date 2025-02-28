@@ -11,6 +11,7 @@ const selectors: Array<ToMaybeValue> = [
   jsonld("place.logo"),
   jsonld("product.logo"),
   jsonld("service.logo"),
+  jsonld("publisher.logo.url"),
   jsonld("publisher.logo"),
   jsonld("logo.url"),
   jsonld("logo"),

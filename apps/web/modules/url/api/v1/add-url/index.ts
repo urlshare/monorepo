@@ -49,8 +49,6 @@ export const addUrl: AddUrl = async ({ categoryIds, metadata, userId }) => {
         .where(orm.eq(schema.urlHashes.compoundHash, compoundHash));
       // END
     } else {
-      console.log("[1] NO URL");
-
       const [url] = await tx
         .insert(schema.urls)
         .values({

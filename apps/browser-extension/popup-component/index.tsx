@@ -73,7 +73,7 @@ export const PopupComponent = () => {
   }
 
   return (
-    <div className="w-72 p-2">
+    <div className="w-96 p-2">
       {showSettings && (
         <Settings
           values={{ apiKey }}
