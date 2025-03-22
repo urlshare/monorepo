@@ -2,9 +2,9 @@ import { api } from "@/trpc/server";
 import { TRPCError } from "@trpc/server";
 import { Separator } from "@workspace/ui/components/separator";
 import { ReactElement } from "react";
-import { completeUserProfileSchema } from "@/modules/user-profile/schemas/complete-user-profile.schema";
-import { ExistingUserProfileForm } from "@/modules/user-profile/ui/existing-user-profile-form";
-import { NewUserProfileForm } from "@/modules/user-profile/ui/new-user-profile-form";
+import { completeUserProfileSchema } from "@/features/user-profile/schemas/complete-user-profile.schema";
+import { ExistingUserProfileForm } from "@/features/user-profile/ui/existing-user-profile-form";
+import { NewUserProfileForm } from "@/features/user-profile/ui/new-user-profile-form";
 
 export default async function Page(): Promise<ReactElement> {
   try {

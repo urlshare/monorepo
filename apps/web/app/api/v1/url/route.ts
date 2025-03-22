@@ -3,9 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import { getUserIdFromRequest } from "@/lib/get-user-id-from-request";
 import { cors, CorsOptions } from "@/lib/cors";
 import { logger } from "@workspace/logger/logger";
-import { addUrl } from "@/modules/url/api/v1/add-url";
-import { addUrlRequestBodySchema } from "@/modules/url/api/v1/add-url/request-body.schema";
 import { UserUrl } from "@workspace/db/types";
+
+import { addUrlRequestBodySchema } from "@/features/url/api/v1/add-url/request-body.schema";
+import { addUrl } from "@/features/url/api/v1/add-url";
 
 const corsOptions: CorsOptions = {
   methods: ["GET", "POST", "OPTIONS"],
@@ -39,8 +40,6 @@ export async function POST(request: Request) {
   } else {
     const data = bodyResult.data;
     let userUrl: UserUrl;
-
-    console.log("data", data);
 
     try {
       userUrl = await addUrl({ categoryIds: data.categoryIds, metadata: data.metadata, userId });

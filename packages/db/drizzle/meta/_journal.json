@@ -36,6 +36,27 @@
       "when": 1740324458398,
       "tag": "0004_add_feeds_table",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1741954729934,
+      "tag": "0005_make_createdAt_notNull_for_feeds",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741981375704,
+      "tag": "0006_change_metadata_from_json_to_jsonb",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1742333365853,
+      "tag": "0007_move_liked_to_feed_interactions",
+      "breakpoints": true
     }
   ]
 }

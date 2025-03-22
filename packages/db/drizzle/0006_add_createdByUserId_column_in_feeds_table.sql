@@ -1,0 +1,2 @@
+ALTER TABLE "urlshare_feeds" ADD COLUMN "created_by_user_id" uuid NOT NULL;--> statement-breakpoint
+ALTER TABLE "urlshare_feeds" ADD CONSTRAINT "urlshare_feeds_created_by_user_id_urlshare_users_id_fk" FOREIGN KEY ("created_by_user_id") REFERENCES "public"."urlshare_users"("id") ON DELETE cascade ON UPDATE no action;

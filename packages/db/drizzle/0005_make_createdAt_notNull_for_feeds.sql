@@ -1,0 +1,1 @@
+ALTER TABLE "urlshare_feeds" ALTER COLUMN "created_at" SET NOT NULL;

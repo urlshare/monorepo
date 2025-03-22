@@ -1,16 +1,28 @@
-import { Button } from "@workspace/ui/components/button";
+"use client";
 
-export default async function Page() {
-  return (
-    <div>
+import { LoggedInUserContent } from "@/features/home-page/logged-in-user-content";
+import { useUserStore } from "@/features/user/store/user-store-provider";
+
+export default function Page() {
+  const { loggedIn, profile } = useUserStore((state) => state);
+
+  if (loggedIn) {
+    return (
       <main>
         <div className="flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <h1 className="text-2xl font-bold">Hello World</h1>
-            <Button size="sm">Button</Button>
-          </div>
+          <LoggedInUserContent userId={profile.id} />
         </div>
       </main>
-    </div>
+    );
+  }
+
+  return (
+    <main>
+      <div className="flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-4">
+          <h1 className="text-2xl font-bold">Welcome to urlshare.app</h1>
+        </div>
+      </div>
+    </main>
   );
 }

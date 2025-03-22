@@ -6,20 +6,20 @@ import {
   type CompressedMetadataData as V1CompressedMetadataData,
 } from "./schemas/v1.schema";
 
-type Version = "v1";
+export type Version = "v1";
 type Data = {
   v1: V1MetadataData;
 };
 type CompressedData = {
   v1: V1CompressedMetadataData;
 };
-type Metadata<V extends Version> = {
-  version: V;
-  data: Data[V];
+export type Metadata = {
+  version: Version;
+  data: Data[Version];
 };
-type CompressedMetadata<V extends Version> = {
-  version: V;
-  data: CompressedData[V];
+export type CompressedMetadata = {
+  version: Version;
+  data: CompressedData[Version];
 };
 
 export const getSchema = (version: Version) => {
@@ -30,10 +30,7 @@ export const getSchema = (version: Version) => {
   }
 };
 
-export const compressMetadata = (
-  version: Version,
-  data: Record<string, unknown>,
-): CompressedMetadata<typeof version> => {
+export const compressMetadata = (version: Version, data: Record<string, unknown>): CompressedMetadata => {
   switch (version) {
     case "v1": {
       return {
@@ -44,7 +41,7 @@ export const compressMetadata = (
   }
 };
 
-export const decompressMetadata = ({ version, data }: CompressedMetadata<Version>): Metadata<typeof version> => {
+export const decompressMetadata = ({ version, data }: CompressedMetadata): Metadata => {
   switch (version) {
     case "v1": {
       return {

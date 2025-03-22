@@ -1,13 +1,11 @@
 "use client";
 
-import { useUserStore } from "@/modules/user/store/user-store-provider";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const MainMenu = () => {
   const pathname = usePathname();
-  const profile = useUserStore((state) => state.profile);
 
   return (
     <nav>
@@ -45,7 +43,6 @@ export const MainMenu = () => {
             Privacy Policy
           </Link>
         </li>
-        <li>{JSON.stringify(profile.id)}</li>
       </ol>
     </nav>
   );

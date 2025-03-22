@@ -15,6 +15,7 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "stream-browserify": "^3.0.0",
     "turbo": "^2.4.0",
     "typescript": "5.7.2",

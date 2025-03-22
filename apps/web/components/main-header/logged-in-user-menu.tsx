@@ -11,19 +11,19 @@ import {
 import { List, LogOut, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 import { SignOutButton } from "./sign-out-button";
-import { UserImage } from "@/modules/user/ui/user-image";
-import { useUserStore } from "@/modules/user/store/user-store-provider";
+import { UserImage } from "@/features/user/ui/user-image";
+import { useUserStore } from "@/features/user/store/user-store-provider";
 
 export const LoggedInUserMenu = () => {
-  const { username, imageUrl } = useUserStore((state) => state.profile);
+  const { profile } = useUserStore((state) => state);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <UserImage username={username} imageUrl={imageUrl} size="small" />
+        <UserImage username={profile?.username || ""} imageUrl={profile?.imageUrl || ""} size="small" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>My account</DropdownMenuLabel>
+        <DropdownMenuLabel>{profile?.username}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="gap-2">
           <List size={12} />

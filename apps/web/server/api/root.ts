@@ -1,8 +1,9 @@
-import { categoriesRouter } from "@/modules/category/router/categories";
+import { categoriesRouter } from "@/features/category/router/categories";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
-import { usersRouter } from "@/modules/user/router/users";
-import { userProfilesRouter } from "@/modules/user-profile/router/user-profiles";
-import { followUserRouter } from "@/modules/follow-user/router/follow-user";
+import { usersRouter } from "@/features/user/router/users";
+import { userProfilesRouter } from "@/features/user-profile/router/user-profiles";
+import { followUserRouter } from "@/features/follow-user/router/follow-user";
+import { feedsRouter } from "@/features/feed/router/feeds";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   followUser: followUserRouter,
   users: usersRouter,
   userProfiles: userProfilesRouter,
+  feeds: feedsRouter,
 });
 
 // export type definition of API

@@ -1,5 +1,6 @@
 import { generateUrlId, URL_ID_LENGTH } from "@workspace/url/id/generate-url-id";
 import { generateUserProfileId, USER_PROFILE_ID_LENGTH } from "@workspace/user-profile/id/generate-user-profile-id";
+import { CompressedMetadata } from "@workspace/metadata/compression";
 
 import { sql, InferSelectModel, relations } from "drizzle-orm";
 import { authUsers } from "drizzle-orm/supabase";
@@ -10,7 +11,7 @@ import {
   char,
   index,
   integer,
-  json,
+  jsonb,
   pgTableCreator,
   primaryKey,
   smallint,
@@ -23,9 +24,10 @@ import {
 import { USERNAME_MAX_LENGTH } from "@workspace/user-profile/username/schemas/username.schema";
 import { CATEGORY_ID_LENGTH, generateCategoryId } from "@workspace/category/id/generate-category-id";
 import { CATEGORY_NAME_MAX_LENGTH } from "@workspace/category/name/category-name.schema";
-import { generateUserUrlId, USER_URL_ID_SIZE } from "@workspace/user-url/id/generate-user-url-id";
+import { generateUserUrlId, USER_URL_ID_LENGTH } from "@workspace/user-url/id/generate-user-url-id";
 import { API_KEY_LENGTH } from "@workspace/user/api-key/generate-api-key";
 import { generateFeedId, FEED_ID_LENGTH } from "@workspace/feed/id/generate-feed-id";
+import { FEED_INTERACTION_ID_LENGTH } from "@workspace/feed-interaction/id/generate-feed-interaction-id";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -87,7 +89,7 @@ export const urls = createTable("urls", {
   url: text("url").notNull(),
   // This is a hash of url, title, image url. Even it image url is not present, hash will be created without it
   compoundHash: char("compound_hash", { length: 64 }).unique().notNull(),
-  metadata: json("metadata").default({}).notNull(),
+  metadata: jsonb("metadata").default({}).notNull().$type<CompressedMetadata>(),
 });
 
 export type Url = InferSelectModel<typeof urls>;
@@ -131,7 +133,7 @@ export type UrlHashCompoundHashesCount = InferSelectModel<typeof urlHashesCompou
 export const usersUrls = createTable(
   "users_urls",
   {
-    id: char("id", { length: USER_URL_ID_SIZE })
+    id: char("id", { length: USER_URL_ID_LENGTH })
       .notNull()
       .primaryKey()
       .$defaultFn(() => generateUserUrlId()),
@@ -177,7 +179,7 @@ export type Category = InferSelectModel<typeof categories>;
 export const userUrlsCategories = createTable(
   "user_urls_categories",
   {
-    userUrlId: char("user_url_id", { length: USER_URL_ID_SIZE })
+    userUrlId: char("user_url_id", { length: USER_URL_ID_LENGTH })
       .notNull()
       .references(() => usersUrls.id, { onDelete: "cascade" }),
     categoryId: char("category_id", { length: CATEGORY_ID_LENGTH })
@@ -233,17 +235,38 @@ export const feeds = createTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    userUrlId: char("user_url_id", { length: USER_URL_ID_SIZE })
+    userUrlId: char("user_url_id", { length: USER_URL_ID_LENGTH })
       .notNull()
       .references(() => usersUrls.id, { onDelete: "cascade" }),
-    liked: boolean("liked").default(false).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(() => new Date()),
   },
   (table) => [index().on(table.userId), index().on(table.userUrlId)],
 );
 
 export type Feed = InferSelectModel<typeof feeds>;
+
+export const feedInteractions = createTable(
+  "feed_interactions",
+  {
+    id: char("id", { length: FEED_INTERACTION_ID_LENGTH })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => generateFeedId()),
+    feedId: char("feed_id", { length: FEED_ID_LENGTH })
+      .notNull()
+      .references(() => feeds.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    liked: boolean("liked").default(false).notNull(),
+  },
+  (table) => [unique().on(table.feedId, table.userId), index().on(table.feedId), index().on(table.userId)],
+);
+
+export type FeedInteraction = InferSelectModel<typeof feedInteractions>;
 
 export const feedsRelations = relations(feeds, ({ one }) => ({
   users: one(users, {

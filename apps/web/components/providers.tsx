@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { TRPCReactProvider } from "@/trpc/react";
-import { UserStoreProvider } from "@/modules/user/store/user-store-provider";
+import { UserStoreProvider } from "@/features/user/store/user-store-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
