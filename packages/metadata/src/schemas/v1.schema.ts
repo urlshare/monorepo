@@ -17,6 +17,7 @@ const urlSchema = urlAddressSchema;
 
 export const metadataDataSchema = z.object({
   author: authorSchema.optional(),
+  contentType: trimmedStringSchema,
   date: dateSchema.optional(),
   description: descriptionSchema.optional(),
   faviconUrl: imageUrlSchema.optional(),
@@ -33,6 +34,7 @@ export type MetadataData = z.output<typeof metadataDataSchema>;
 
 export type CompressedMetadataData = {
   author?: z.output<typeof authorSchema>;
+  contentType: z.output<typeof trimmedStringSchema>;
   date?: z.output<typeof dateSchema>;
   description?: z.output<typeof descriptionSchema>;
   faviconUrl?: z.output<typeof faviconUrlSchema>;
@@ -46,6 +48,7 @@ export type CompressedMetadataData = {
 
 export const compressMapper: Record<keyof MetadataData, keyof CompressedMetadataData> = {
   author: "author",
+  contentType: "contentType",
   date: "date",
   description: "description",
   faviconUrl: "faviconUrl",

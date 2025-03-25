@@ -12,6 +12,7 @@ describe("compressMetadata", () => {
     it("should omit them", () => {
       const metadata: MetadataData = {
         author: undefined,
+        contentType: "text/html",
         date: "2025-02-02T04:00:00.000Z",
         description: "Description",
         faviconUrl: "https://example.com/favicon.jpg",
@@ -26,6 +27,7 @@ describe("compressMetadata", () => {
       const compressedMetadata = compressMetadataData(metadata);
 
       expect(compressedMetadata).toEqual({
+        contentType: "text/html",
         date: "2025-02-02T04:00:00.000Z",
         description: "Description",
         faviconUrl: "https://example.com/favicon.jpg",
@@ -47,6 +49,7 @@ describe("decompress", () => {
     it("should not be brought back", () => {
       const compressedMetadata: CompressedMetadataData = {
         author: "Author",
+        contentType: "text/html",
         date: "2025-02-02T04:00:00.000Z",
         url: "https://example.com",
       };
@@ -55,6 +58,7 @@ describe("decompress", () => {
 
       expect(metadata).toEqual({
         author: "Author",
+        contentType: "text/html",
         date: "2025-02-02T04:00:00.000Z",
         url: "https://example.com",
       });

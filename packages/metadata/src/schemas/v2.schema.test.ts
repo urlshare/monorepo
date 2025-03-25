@@ -11,6 +11,7 @@ describe("compressMetadata", () => {
   it("should shorten the keys in order to save object's space", () => {
     const metadata: MetadataData = {
       author: "Author",
+      contentType: "text/html",
       datetime: "2025-02-02T04:00:00.000Z",
       description: "Description",
       imageUrl: "https://example.com/image.jpg",
@@ -25,6 +26,7 @@ describe("compressMetadata", () => {
 
     expect(compressedMetadata).toEqual({
       a: "Author",
+      j: "text/html",
       b: "2025-02-02T04:00:00.000Z",
       c: "Description",
       d: "https://example.com/image.jpg",
@@ -40,6 +42,7 @@ describe("compressMetadata", () => {
     it("should omit them", () => {
       const metadata: MetadataData = {
         author: null,
+        contentType: "text/html",
         datetime: "2025-02-02T04:00:00.000Z",
         description: "Description",
         imageUrl: "https://example.com/image.jpg",
@@ -53,6 +56,7 @@ describe("compressMetadata", () => {
       const compressedMetadata = compressMetadataData(metadata);
 
       expect(compressedMetadata).toEqual({
+        j: "text/html",
         b: "2025-02-02T04:00:00.000Z",
         c: "Description",
         d: "https://example.com/image.jpg",
@@ -72,6 +76,7 @@ describe("decompress", () => {
   it("should bring back the original keys and keep values intact", () => {
     const compressedMetadata: CompressedMetadataData = {
       a: "Author",
+      j: "text/html",
       b: "2025-02-02T04:00:00.000Z",
       c: "Description",
       d: "https://example.com/image.jpg",
@@ -86,6 +91,7 @@ describe("decompress", () => {
 
     expect(metadata).toEqual({
       author: "Author",
+      contentType: "text/html",
       datetime: "2025-02-02T04:00:00.000Z",
       description: "Description",
       imageUrl: "https://example.com/image.jpg",
@@ -101,6 +107,7 @@ describe("decompress", () => {
     it("should include them with null-ish value", () => {
       const compressedMetadata: CompressedMetadataData = {
         a: "Author",
+        j: "text/html",
         b: "2025-02-02T04:00:00.000Z",
       };
 
@@ -108,6 +115,7 @@ describe("decompress", () => {
 
       expect(metadata).toEqual({
         author: "Author",
+        contentType: "text/html",
         datetime: "2025-02-02T04:00:00.000Z",
         description: null,
         imageUrl: null,

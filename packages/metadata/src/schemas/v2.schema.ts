@@ -6,6 +6,7 @@ const trimmedStringSchema = z.string().trim();
 const urlAddressSchema = trimmedStringSchema.url();
 
 const authorSchema = trimmedStringSchema;
+const contentTypeSchema = trimmedStringSchema;
 const datetimeSchema = trimmedStringSchema.datetime();
 const descriptionSchema = trimmedStringSchema;
 const imageUrlSchema = urlAddressSchema;
@@ -17,6 +18,7 @@ const urlSchema = urlAddressSchema;
 
 export const metadataDataSchema = z.object({
   author: authorSchema.catch("").transform(stringOrNull).nullable(),
+  contentType: contentTypeSchema.catch("").transform(stringOrNull).nullable(),
   datetime: datetimeSchema.catch("").transform(stringOrNull).nullable(),
   description: descriptionSchema.catch("").transform(stringOrNull).nullable(),
   imageUrl: imageUrlSchema.catch("").transform(stringOrNull).nullable(),
@@ -32,6 +34,7 @@ export type MetadataData = z.output<typeof metadataDataSchema>;
 
 export type CompressedMetadataData = {
   a?: z.output<typeof authorSchema>;
+  j?: z.output<typeof contentTypeSchema>;
   b?: z.output<typeof datetimeSchema>;
   c?: z.output<typeof descriptionSchema>;
   d?: z.output<typeof imageUrlSchema>;
@@ -44,6 +47,7 @@ export type CompressedMetadataData = {
 
 export const compressMapper: Record<keyof MetadataData, keyof CompressedMetadataData> = {
   author: "a",
+  contentType: "j",
   datetime: "b",
   description: "c",
   imageUrl: "d",
