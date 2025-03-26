@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import { describe, expect,it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { getAuthor } from "./author";
 import { buildJsonldAuthorNameHtml, buildJsonldMultiAuthorNameHtml } from "./author.fixtures";

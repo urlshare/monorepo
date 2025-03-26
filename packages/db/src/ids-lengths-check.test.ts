@@ -5,13 +5,13 @@ import {
   FEED_INTERACTION_ID_LENGTH,
   generateFeedInteractionId,
 } from "@workspace/feed-interaction/id/generate-feed-interaction-id";
-import { generateRequestId,REQUEST_ID_LENGTH } from "@workspace/request/id/generate-request-id";
-import { generateUrlId,URL_ID_LENGTH } from "@workspace/url/id/generate-url-id";
+import { generateRequestId, REQUEST_ID_LENGTH } from "@workspace/request/id/generate-request-id";
+import { generateUrlId, URL_ID_LENGTH } from "@workspace/url/id/generate-url-id";
 import { API_KEY_LENGTH, generateApiKey } from "@workspace/user/api-key/generate-api-key";
-import { generateUserProfileId,USER_PROFILE_ID_LENGTH } from "@workspace/user-profile/id/generate-user-profile-id";
+import { generateUserProfileId, USER_PROFILE_ID_LENGTH } from "@workspace/user-profile/id/generate-user-profile-id";
 import { USERNAME_MAX_LENGTH } from "@workspace/user-profile/username/schemas/username.schema";
-import { generateUserUrlId,USER_URL_ID_LENGTH } from "@workspace/user-url/id/generate-user-url-id";
-import { describe, expect,it } from "vitest";
+import { generateUserUrlId, USER_URL_ID_LENGTH } from "@workspace/user-url/id/generate-user-url-id";
+import { describe, expect, it } from "vitest";
 
 describe("data lengths check", () => {
   it("if any data's length changes, this test must fail, as those sizes are used in schema", () => {

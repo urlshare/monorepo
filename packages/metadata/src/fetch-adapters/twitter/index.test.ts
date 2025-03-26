@@ -1,5 +1,5 @@
 import nock from "nock";
-import { afterEach, beforeEach, describe, expect,it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { tweetExampleMetadata } from "./fixtures/tweet-example-metadata";
 import { generateToken, getTweetId, isTweetUrl, toMetadata, twitterMetadataFetchAdapter } from "./index";
