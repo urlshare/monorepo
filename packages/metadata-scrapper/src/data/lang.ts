@@ -1,7 +1,8 @@
 import { z } from "zod";
-import { querySelector } from "../utils/selectors";
+
 import { ToMaybeValue } from "../types";
 import { condenseWhitespace } from "../utils/condense-whitespace";
+import { querySelector } from "../utils/selectors";
 
 const selectors: Array<ToMaybeValue> = [
   querySelector('meta[property="og:locale"]', "content"),

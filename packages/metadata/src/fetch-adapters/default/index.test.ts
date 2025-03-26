@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
 import nock from "nock";
+import { beforeEach,describe, expect, it } from "vitest";
 
 import { Metadata } from "../../types";
 import { htmlContentOfMyProfileOnLN } from "./fixtures/html-content-of-my-profile-on-ln";

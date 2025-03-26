@@ -1,6 +1,6 @@
-import { jsonld, querySelector } from "../utils/selectors";
 import { MetadataGetter, ToMaybeValue } from "../types";
 import { condenseWhitespace } from "../utils/condense-whitespace";
+import { jsonld, querySelector } from "../utils/selectors";
 
 const selectors: Array<ToMaybeValue> = [
   querySelector('meta[property="og:description"]', "content"),

@@ -14,5 +14,9 @@
   "dependencies": {
     "@workspace/shared": "workspace:*",
     "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
+    "eslint": "^9.22.0"
   }
 }

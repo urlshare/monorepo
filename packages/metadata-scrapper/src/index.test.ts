@@ -1,8 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { JSDOM } from "jsdom";
+import { describe, expect,it } from "vitest";
+
 import { scrapMetadata } from "./index";
 
 describe("metadata-scrapper", () => {

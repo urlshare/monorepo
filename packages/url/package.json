@@ -17,5 +17,8 @@
     "@workspace/metadata": "workspace:*",
     "@workspace/shared": "workspace:*",
     "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*"
   }
 }

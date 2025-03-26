@@ -13,6 +13,8 @@
     "./hash": "./src/hash.ts"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2"
+    "@types/node": "^22.10.2",
+    "@workspace/eslint-config": "workspace:*",
+    "eslint": "^9.22.0"
   }
 }

@@ -1,9 +1,8 @@
-import { KeyRound } from "lucide-react"
-import React, { useState, type FC } from "react"
-
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { apiKeySchema } from "@workspace/user/api-key/api-key.schema"
+import { KeyRound } from "lucide-react"
+import React, { type FC, useState } from "react"
 
 export type SettingsFormValues = {
   apiKey: string
@@ -67,7 +66,7 @@ export const SettingsForm: FC<SettingsFormProps> = ({ onSubmit, values }) => {
       <aside className="rounded bg-sky-400/10 px-3 py-1 text-sky-600">
         API key is used to add URLs through this plugin.
         <br /> You can find it in your{" "}
-        <a className="underline" href={`http://localhost:3000/settings/profile`} target="_blank">
+        <a className="underline" href={`http://localhost:3000/settings/profile`} target="_blank" rel="noreferrer">
           profile settings
         </a>
         .

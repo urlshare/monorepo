@@ -4,12 +4,14 @@
   "globalEnv": [
     "GITHUB_ID",
     "GITHUB_SECRET",
+    "DATABASE_URL",
     "LOG_LEVEL",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     "NEXT_PUBLIC_SUPABASE_URL",
     "NODE_ENV",
     "PORT",
-    "SKIP_ENV_VALIDATION"
+    "SKIP_ENV_VALIDATION",
+    "WXT_API_BASE_URL"
   ],
   "ui": "tui",
   "tasks": {

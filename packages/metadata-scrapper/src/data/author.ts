@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
+
+import { MetadataGetter,StrictToMaybeValue, ToMaybeValue } from "../types";
 import { filter, firstNonEmpty } from "../utils/filters";
-import { ToMaybeValue, StrictToMaybeValue, MetadataGetter } from "../types";
-import { strict, isStrict } from "../utils/strict";
+import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
+import { isStrict,strict } from "../utils/strict";
 
 const AUTHOR_MAX_LENGTH = 128;
 const TWO_WORDS_SEPARATED_BY_WHITESPACE = /^\S+\s+\S+/;

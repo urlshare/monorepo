@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { addCategoryBodySchema, type AddCategoryBody } from "@workspace/category/api/v1/add-category.schema"
+import { type AddCategoryBody, addCategoryBodySchema } from "@workspace/category/api/v1/add-category.schema"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { cn } from "@workspace/ui/lib/utils"
 import { Plus } from "lucide-react"
-import React, { useEffect, type FC } from "react"
-import { useForm, type FieldValues } from "react-hook-form"
+import React, { type FC, useEffect } from "react"
+import { type FieldValues, useForm } from "react-hook-form"
 
 export type Size = "default" | "small"
 

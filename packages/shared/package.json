@@ -15,5 +15,9 @@
   },
   "dependencies": {
     "nanoid": "^5.0.9"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
+    "eslint": "^9.22.0"
   }
 }

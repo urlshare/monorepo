@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
-import axios, { type AxiosError } from "axios"
-
 import type { AddCategoryBody, AddCategorySuccessResponse } from "@workspace/category/api/v1/add-category.schema"
+import axios, { type AxiosError } from "axios"
 
 import { API_BASE_URL } from "../utils/constants"
 

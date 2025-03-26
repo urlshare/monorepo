@@ -1,7 +1,7 @@
-import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
 import { MetadataGetter, ToMaybeValue } from "../types";
-import { filter, findFirstUsing, firstNonEmpty } from "../utils/filters";
 import { condenseWhitespace } from "../utils/condense-whitespace";
+import { filter, findFirstUsing, firstNonEmpty } from "../utils/filters";
+import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
 
 const REGEX_TITLE: RegExp = /^.*?[-|]\s+(.*)$/;
 

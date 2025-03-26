@@ -1,7 +1,7 @@
 import { MetadataGetter, ToMaybeValue } from "../types";
-import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
-import { filter, firstNonEmpty } from "../utils/filters";
 import { condenseWhitespace } from "../utils/condense-whitespace";
+import { filter, firstNonEmpty } from "../utils/filters";
+import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
 
 const selectors: Array<ToMaybeValue> = [
   querySelector('meta[property="og:title"]', "content"),

@@ -7,7 +7,7 @@
     "dev": "echo 'Add dev script here'",
     "build": "echo 'Add build script here'",
     "test": "vitest run",
-    "lint": "echo 'Add lint script here'",
+    "lint": "eslint . --max-warnings 0",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"
@@ -26,14 +26,16 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "@workspace/category": "workspace:*",
+    "@workspace/eslint-config": "workspace:*",
     "@workspace/feed": "workspace:*",
     "@workspace/feed-interaction": "workspace:*",
     "@workspace/metadata": "workspace:*",
     "@workspace/request": "workspace:*",
     "@workspace/url": "workspace:*",
+    "@workspace/user": "workspace:*",
     "@workspace/user-profile": "workspace:*",
     "@workspace/user-url": "workspace:*",
-    "@workspace/user": "workspace:*",
-    "drizzle-kit": "^0.30.1"
+    "drizzle-kit": "^0.30.1",
+    "eslint": "^9.22.0"
   }
 }

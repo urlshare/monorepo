@@ -1,4 +1,4 @@
-import { schema, orm } from "@workspace/db/db";
+import { orm, schema } from "@workspace/db/db";
 import { type YesNo } from "@workspace/shared/types";
 
 type ProfileData = Pick<schema.UserProfile, "username" | "imageUrl" | "userId">;

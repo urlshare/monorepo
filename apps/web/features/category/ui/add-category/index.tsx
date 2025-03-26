@@ -1,8 +1,9 @@
 import React, { FC, useCallback, useState } from "react";
-import { FieldValues } from "react-hook-form";
+import { type FieldValues } from "react-hook-form";
+
+import { api } from "@/trpc/react";
 
 import { AddCategoryForm, type Size } from "./add-category-form";
-import { api } from "@/trpc/react";
 
 type AddCategoryProps = {
   onCategoryAdd: () => void;

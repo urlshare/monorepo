@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
 import _getMetadata from "metadata-scraper";
+import { describe, expect, it, vi } from "vitest";
 
 import { createExampleMetadataScraperResult } from "./fixtures/example-metadata";
 import { getMetadata } from "./get-metadata";

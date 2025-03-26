@@ -1,8 +1,7 @@
-import React, { type FC } from "react"
-
 import type { CategoryVM } from "@workspace/category/models/category.vm"
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import { cn } from "@workspace/ui/lib/utils"
+import React, { type FC } from "react"
 
 type CategoryPickerCategory = CategoryVM & { selected: boolean }
 

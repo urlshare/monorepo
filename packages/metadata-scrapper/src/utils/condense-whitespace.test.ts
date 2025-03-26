@@ -1,4 +1,5 @@
-import { it, describe, expect } from "vitest";
+import { describe, expect,it } from "vitest";
+
 import { condenseWhitespace } from "./condense-whitespace";
 
 describe("condenseWhitespace", () => {

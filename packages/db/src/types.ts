@@ -1,2 +1,2 @@
+export type { Category, Feed,Follow, Url, User, UserProfile, UserUrl, UserUrlCategory } from "./schema";
 export type { RowList } from "postgres";
-export type { User, Url, UserProfile, UserUrl, UserUrlCategory, Category, Follow, Feed } from "./schema";

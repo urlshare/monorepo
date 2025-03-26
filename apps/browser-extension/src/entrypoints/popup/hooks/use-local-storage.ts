@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { storage } from "wxt/storage"
 
 const buildKey = (key: string): `local:${string}` => `local:${key}`
@@ -6,6 +6,14 @@ const buildKey = (key: string): `local:${string}` => `local:${key}`
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (newValue: T) => Promise<void>] {
   const [value, setValueInState] = useState<T>(initialValue)
   const localKey = buildKey(key)
+
+  const setValue = useCallback(
+    async (newValue: T) => {
+      setValueInState(newValue)
+      await storage.setItem<T>(localKey, newValue)
+    },
+    [localKey]
+  )
 
   useEffect(() => {
     async function loadStorage() {
@@ -16,12 +24,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (newValue:
       }
     }
     loadStorage()
-  }, [localKey])
-
-  const setValue = async (newValue: T) => {
-    setValueInState(newValue)
-    await storage.setItem<T>(localKey, newValue)
-  }
+  }, [localKey, setValue])
 
   return [value, setValue]
 }

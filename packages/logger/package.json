@@ -6,7 +6,7 @@
     "dev": "echo 'Add dev script here'",
     "build": "echo 'Add build script here'",
     "test": "echo 'Add test script here'",
-    "lint": "echo 'Add lint script here'"
+    "lint": "eslint . --max-warnings 0"
   },
   "exports": {
     "./logger": "./src/logger.ts"
@@ -17,6 +17,8 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2"
+    "@types/node": "^22.10.2",
+    "@workspace/eslint-config": "workspace:*",
+    "eslint": "^9.22.0"
   }
 }

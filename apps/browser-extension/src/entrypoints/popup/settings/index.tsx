@@ -1,13 +1,13 @@
-import { X } from "lucide-react";
-import React, { type FC } from "react";
+import { X } from "lucide-react"
+import React, { type FC } from "react"
 
-import { type OnFormSubmit, SettingsForm, type SettingsFormValues } from "./settings-form";
+import { type OnFormSubmit, SettingsForm, type SettingsFormValues } from "./settings-form"
 
 type SettingsProps = {
-  values: SettingsFormValues;
-  onClose: () => void;
-  onSubmit: OnFormSubmit;
-};
+  values: SettingsFormValues
+  onClose: () => void
+  onSubmit: OnFormSubmit
+}
 
 export const Settings: FC<SettingsProps> = ({ onClose, onSubmit, values }) => {
   return (
@@ -17,5 +17,5 @@ export const Settings: FC<SettingsProps> = ({ onClose, onSubmit, values }) => {
       </div>
       <SettingsForm values={values} onSubmit={onSubmit} />
     </>
-  );
-};
+  )
+}

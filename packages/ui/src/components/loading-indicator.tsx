@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Loader2, LucideProps } from "lucide-react";
 import { cn } from "@workspace/ui/lib/utils";
+import { Loader2, LucideProps } from "lucide-react";
+import * as React from "react";
 
 interface LoadingIndicatorProps {
   label: string;

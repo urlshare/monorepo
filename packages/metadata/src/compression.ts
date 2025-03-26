@@ -1,9 +1,9 @@
 import {
-  metadataDataSchema as v1metadataDataSchema,
+  type CompressedMetadataData as V1CompressedMetadataData,
   compressMetadataData as v1compressMetadataData,
   decompressMetadataData as v1decompressMetadataData,
   type MetadataData as V1MetadataData,
-  type CompressedMetadataData as V1CompressedMetadataData,
+  metadataDataSchema as v1metadataDataSchema,
 } from "./schemas/v1.schema";
 
 export type Version = "v1";

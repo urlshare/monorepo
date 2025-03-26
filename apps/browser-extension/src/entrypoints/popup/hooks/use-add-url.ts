@@ -1,9 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
-import axios from "axios"
-
 import type { CategoryId } from "@workspace/category/id/category-id.schema"
 import type { ScrappedMetadata } from "@workspace/metadata-scrapper/scrap-metadata"
 import type { ApiKey } from "@workspace/user/api-key/api-key.schema"
+import axios from "axios"
 
 import { API_BASE_URL } from "../utils/constants"
 

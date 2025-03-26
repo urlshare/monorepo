@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
-
 import type { GetCategoriesSuccessResponse } from "@workspace/category/api/v1/get-categories.schema"
 import type { CategoryVM } from "@workspace/category/models/category.vm"
+import axios from "axios"
 
 import { API_BASE_URL } from "../utils/constants"
 

@@ -1,4 +1,4 @@
-import { useCallback, type FC } from "react"
+import { type FC, useCallback } from "react"
 import type { FieldValues } from "react-hook-form"
 
 import { useAddCategory } from "../hooks/use-add-category"
@@ -10,7 +10,7 @@ type AddCategoryProps = {
 }
 
 export const AddCategory: FC<AddCategoryProps> = ({ apiKey, onSuccess }) => {
-  const { mutate, isPending, isSuccess, isError, reset, error, data, failureReason } = useAddCategory(apiKey, onSuccess)
+  const { mutate, isPending, isSuccess, isError, reset } = useAddCategory(apiKey, onSuccess)
 
   const addCategory = useCallback(
     (values: FieldValues) => {

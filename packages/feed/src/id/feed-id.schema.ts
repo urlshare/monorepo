@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { FEED_ID_PREFIX, FEED_ID_LENGTH } from "./generate-feed-id";
+import { FEED_ID_LENGTH, FEED_ID_PREFIX } from "./generate-feed-id";
 
 export const feedIdSchema = z
   .string()

@@ -1,11 +1,10 @@
-import { Check } from "lucide-react"
-import React, { useCallback, useEffect, useState, type FC } from "react"
-
 import type { CategoryVM } from "@workspace/category/models/category.vm"
 import type { ScrappedMetadata } from "@workspace/metadata-scrapper/scrap-metadata"
 import { Button } from "@workspace/ui/components/button"
 import { LoadingIndicator } from "@workspace/ui/components/loading-indicator"
 import { Separator } from "@workspace/ui/components/separator"
+import { Check } from "lucide-react"
+import { type FC, useCallback, useEffect, useState } from "react"
 
 import { AddCategory } from "../add-category"
 import { CategoryPicker } from "../category-picker"
@@ -29,7 +28,7 @@ export const AddUrl: FC<AddUrlProps> = ({ apiKey, url, metadata }) => {
     if (categoriesFetched) {
       setCategories(data)
     }
-  }, [categoriesFetched, data])
+  }, [categoriesFetched, data, setCategories])
 
   const [selectedCategories, setSelectedCategories] = useState<CategoryVM["id"][]>([])
 

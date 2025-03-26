@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { sha1, sha256 } from "./hash";
 
 type Sample = { string: string; sha1: string; sha256: string };

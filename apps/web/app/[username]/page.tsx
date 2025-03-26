@@ -1,12 +1,13 @@
-import { notFound } from "next/navigation";
+import { db } from "@workspace/db/db";
 import { type UserProfile } from "@workspace/db/types";
 import { usernameSchema } from "@workspace/user-profile/username/schemas/username.schema";
-import { createClient } from "@/supabase/utils/server";
-import { toPublicUserProfileVM } from "@/features/user-profile/models/public-user-profile.vm";
 import { normalizeUsername } from "@workspace/user-profile/utils/normalize-username";
-import { db } from "@workspace/db/db";
+import { notFound } from "next/navigation";
+
 import { CategoriesSelector } from "@/features/category/ui/categories-selector";
 import { InfiniteUserFeed } from "@/features/feed/ui/user-feed-list/infinite-user-feed";
+import { toPublicUserProfileVM } from "@/features/user-profile/models/public-user-profile.vm";
+import { createClient } from "@/supabase/utils/server";
 
 export default async function Page({ params }: { params: Promise<{ username: UserProfile["username"] }> }) {
   const supabase = await createClient();

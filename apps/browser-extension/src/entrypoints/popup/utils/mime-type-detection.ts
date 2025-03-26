@@ -21,7 +21,7 @@ const mimeTypes = {
     "image/wmf",
     "image/avif"
   ]),
-  text: new Set(["text/plain", "text/html", "text/css", "text/javascript", "text/markdown", "text/xml"]),
+  text: new Set(["text/plain", "text/css", "text/javascript", "text/markdown", "text/xml"]),
   application: new Set([
     "application/json",
     "application/xml",

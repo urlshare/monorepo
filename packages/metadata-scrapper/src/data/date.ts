@@ -1,6 +1,6 @@
-import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
-import { filter, firstNonEmpty } from "../utils/filters";
 import { MetadataGetter, ToMaybeValue } from "../types";
+import { filter, firstNonEmpty } from "../utils/filters";
+import { jsonld, querySelector, querySelectorAll } from "../utils/selectors";
 
 const selectors: Array<ToMaybeValue> = [
   jsonld("dateModified"),

@@ -1,4 +1,3 @@
-import { type MetadataGetter } from "./types";
 import { getAuthor } from "./data/author";
 import { getDate } from "./data/date";
 import { getDescription } from "./data/description";
@@ -9,6 +8,7 @@ import { getLogo } from "./data/logo";
 import { getPublisher } from "./data/publisher";
 import { getTitle } from "./data/title";
 import { getUrl } from "./data/url";
+import { type MetadataGetter } from "./types";
 
 export type ScrappedMetadata = {
   author?: string;

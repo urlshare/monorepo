@@ -1,5 +1,5 @@
-import { jsonld, querySelector } from "../utils/selectors";
 import { MetadataGetter, ToMaybeValue } from "../types";
+import { jsonld, querySelector } from "../utils/selectors";
 import { toFullUrl } from "../utils/url";
 
 const selectors: Array<ToMaybeValue> = [
