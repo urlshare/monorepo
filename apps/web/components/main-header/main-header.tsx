@@ -1,8 +1,10 @@
-import { LoggedInUserMenu } from "./logged-in-user-menu";
-import { MainMenu } from "./main-menu";
-import { LoggedOutUserMenu } from "./logged-out-user-menu";
 import { User } from "@supabase/supabase-js";
+
 import { ThemeToggle } from "@/features/theme/ui/toggle";
+
+import { LoggedInUserMenu } from "./logged-in-user-menu";
+import { LoggedOutUserMenu } from "./logged-out-user-menu";
+import { MainMenu } from "./main-menu";
 
 export const MainHeader = async ({ user }: { user: User | null }) => {
   return (

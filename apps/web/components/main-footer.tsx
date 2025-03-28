@@ -1,5 +1,6 @@
 import { Button } from "@workspace/ui/components/button";
 import { Chrome, Github } from "lucide-react";
+
 import { Logo } from "./logo";
 
 export const MainFooter = () => {

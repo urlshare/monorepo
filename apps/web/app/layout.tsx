@@ -1,14 +1,15 @@
-import { Geist, Geist_Mono } from "next/font/google";
-
 import "@workspace/ui/globals.css";
 
-import { Providers } from "@/components/providers";
-import { Metadata } from "next";
-import { MainHeader } from "@/components/main-header/main-header";
-import { MainFooter } from "@/components/main-footer";
-import { createClient } from "@/supabase/utils/server";
-import { SetUserProfileInState } from "@/features/user-profile/ui/set-user-profile-in-state";
 import { Toaster } from "@workspace/ui/components/sonner";
+import { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { JSX } from "react";
+
+import { MainFooter } from "@/components/main-footer";
+import { MainHeader } from "@/components/main-header/main-header";
+import { Providers } from "@/components/providers";
+import { SetUserProfileInState } from "@/features/user-profile/ui/set-user-profile-in-state";
+import { createClient } from "@/supabase/utils/server";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -30,7 +31,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): Promise<JSX.Element> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -45,11 +46,8 @@ export default async function RootLayout({
           <MainHeader user={user} />
 
           <div className="container place-self-center">
-            <div className="flex w-full flex-grow flex-col flex-wrap py-4 sm:flex-row sm:flex-nowrap">
-              <div className="w-fixed w-full flex-shrink flex-grow-0 px-4">Left</div>
-              <div className="w-full flex-grow px-3 pt-1">{children}</div>
-              <div className="w-fixed w-full flex-shrink flex-grow-0 px-2">RIght</div>
-            </div>
+            {/* <div className="flex w-full flex-grow flex-col flex-wrap py-4 sm:flex-row sm:flex-nowrap">{children}</div> */}
+            <div className="flex w-full columns-3 gap-8">{children}</div>
             <MainFooter />
           </div>
           <Toaster />

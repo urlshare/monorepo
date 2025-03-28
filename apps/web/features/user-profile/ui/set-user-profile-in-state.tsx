@@ -1,9 +1,10 @@
 "use client";
 
-import { useUserStore } from "@/features/user/store/user-store-provider";
-import { api } from "@/trpc/react";
 import { User } from "@supabase/supabase-js";
 import { useEffect } from "react";
+
+import { useUserStore } from "@/features/user/store/user-store-provider";
+import { api } from "@/trpc/react";
 
 export const SetUserProfileInState = ({ user }: { user: User | null }) => {
   const { loggedIn, setProfile, clearUser } = useUserStore((state) => state);

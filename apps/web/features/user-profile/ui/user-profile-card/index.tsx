@@ -1,13 +1,16 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { cn } from "@workspace/ui/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { FC } from "react";
 
-import { DataElement } from "./data-element.js";
 import { ToggleFollowUser } from "@/features/follow-user/ui/toggle-follow-user";
 import { UserImage } from "@/features/user/ui/user-image";
+
 import { PublicUserProfileVM } from "../../models/public-user-profile.vm";
+import { DataElement } from "./data-element";
 
 interface UserProfileCardProps {
   publicUserProfileData: PublicUserProfileVM;
@@ -15,7 +18,7 @@ interface UserProfileCardProps {
 }
 
 export const UserProfileCard: FC<UserProfileCardProps> = ({ publicUserProfileData, canFollow = false }) => {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const { id, username, imageUrl, followingCount, followersCount, likesCount, urlsCount } = publicUserProfileData;
 
   return (

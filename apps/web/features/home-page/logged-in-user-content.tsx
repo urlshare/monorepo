@@ -1,10 +1,12 @@
 "use client";
 
 import { type User } from "@workspace/db/types";
-import { useCategoriesStore } from "../category/stores/use-categories-store";
-import { api } from "@/trpc/react";
-import { useEffect } from "react";
 import { LoadingIndicator } from "@workspace/ui/components/loading-indicator";
+import { useEffect } from "react";
+
+import { api } from "@/trpc/react";
+
+import { useCategoriesStore } from "../category/stores/use-categories-store";
 import { ErrorLoadingCategories } from "../category/ui/category-picker/error-loading-categories";
 import { FeedListFilters } from "../feed/ui/feed-list-filters";
 import { InfiniteUserFeed } from "../feed/ui/user-feed-list/infinite-user-feed";

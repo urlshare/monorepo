@@ -1,9 +1,10 @@
 "use client";
 
-import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { TRPCReactProvider } from "@/trpc/react";
+import * as React from "react";
+
 import { UserStoreProvider } from "@/features/user/store/user-store-provider";
+import { TRPCReactProvider } from "@/trpc/react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

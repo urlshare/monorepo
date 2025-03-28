@@ -92,8 +92,6 @@ const PopupComponent = () => {
               url: currentUrl
             })
 
-            console.log(metadata)
-
             setMetadata({ ...metadata, contentType })
           }
         })

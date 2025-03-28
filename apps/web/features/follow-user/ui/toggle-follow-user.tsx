@@ -1,10 +1,13 @@
-import { api } from "@/trpc/react";
+"use client";
+
 import { schema } from "@workspace/db/db";
 import { Button } from "@workspace/ui/components/button";
 import { LoadingIndicator } from "@workspace/ui/components/loading-indicator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@workspace/ui/components/tooltip";
 import { UserMinus, UserPlus } from "lucide-react";
 import { FC, useEffect, useState } from "react";
+
+import { api } from "@/trpc/react";
 
 interface ToggleFollowUserProps {
   userId: schema.User["id"];

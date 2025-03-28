@@ -1,8 +1,9 @@
-import { describe, it, expect, vi } from "vitest";
-import { mock } from "vitest-mock-extended";
-import { getUserIdFromRequestFactory } from "./get-user-id-from-request";
 import { type Logger } from "@workspace/logger/logger";
 import { generateApiKey } from "@workspace/user/api-key/generate-api-key";
+import { describe, expect, it, vi } from "vitest";
+import { mock } from "vitest-mock-extended";
+
+import { getUserIdFromRequestFactory } from "./get-user-id-from-request";
 
 describe("getUserIdFromRequest", () => {
   const requestId = "test-request-id";

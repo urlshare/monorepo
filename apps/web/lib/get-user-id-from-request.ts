@@ -1,8 +1,8 @@
-import type { RequestId } from "@workspace/request/id/generate-request-id";
-import { User } from "@workspace/db/types";
-import { ApiKey, apiKeySchema } from "@workspace/user/api-key/api-key.schema";
-import { type Logger, logger } from "@workspace/logger/logger";
 import { db } from "@workspace/db/db";
+import { User } from "@workspace/db/types";
+import { type Logger, logger } from "@workspace/logger/logger";
+import type { RequestId } from "@workspace/request/id/generate-request-id";
+import { ApiKey, apiKeySchema } from "@workspace/user/api-key/api-key.schema";
 
 export const getUserIdFromRequestFactory =
   (logger: Logger, getUserIdByApiKey: GetUserIdByApiKey) =>

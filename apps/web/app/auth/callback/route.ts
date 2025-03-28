@@ -1,8 +1,9 @@
-import { env } from "@/env";
-import { createClient } from "@/supabase/utils/server";
 import { db, schema } from "@workspace/db/db";
 import { logger } from "@workspace/logger/logger";
 import { NextResponse } from "next/server";
+
+import { env } from "@/env";
+import { createClient } from "@/supabase/utils/server";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
