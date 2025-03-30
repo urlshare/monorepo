@@ -1,7 +1,6 @@
 import { CATEGORY_ID_LENGTH, generateCategoryId } from "@workspace/category/id/generate-category-id";
 import { CATEGORY_NAME_MAX_LENGTH } from "@workspace/category/name/category-name.schema";
 import { FEED_ID_LENGTH, generateFeedId } from "@workspace/feed/id/generate-feed-id";
-import { FEED_INTERACTION_ID_LENGTH } from "@workspace/feed-interaction/id/generate-feed-interaction-id";
 import { CompressedMetadata } from "@workspace/metadata/compression";
 import { generateUrlId, URL_ID_LENGTH } from "@workspace/url/id/generate-url-id";
 import { API_KEY_LENGTH } from "@workspace/user/api-key/generate-api-key";
@@ -250,10 +249,6 @@ export type Feed = InferSelectModel<typeof feeds>;
 export const feedInteractions = createTable(
   "feed_interactions",
   {
-    id: char("id", { length: FEED_INTERACTION_ID_LENGTH })
-      .notNull()
-      .primaryKey()
-      .$defaultFn(() => generateFeedId()),
     feedId: char("feed_id", { length: FEED_ID_LENGTH })
       .notNull()
       .references(() => feeds.id, { onDelete: "cascade" }),
@@ -262,7 +257,11 @@ export const feedInteractions = createTable(
       .references(() => users.id, { onDelete: "cascade" }),
     liked: boolean("liked").default(false).notNull(),
   },
-  (table) => [unique().on(table.feedId, table.userId), index().on(table.feedId), index().on(table.userId)],
+  (table) => [
+    primaryKey({ columns: [table.feedId, table.userId] }),
+    index().on(table.feedId),
+    index().on(table.userId),
+  ],
 );
 
 export type FeedInteraction = InferSelectModel<typeof feedInteractions>;

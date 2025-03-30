@@ -1,1 +1,0 @@
-ALTER TABLE "urlshare_feeds" ALTER COLUMN "created_by_user_id" DROP NOT NULL;

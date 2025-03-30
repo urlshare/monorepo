@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1736631681149,
-      "tag": "0000_add_schema",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1740259824257,
-      "tag": "0001_replace_hash_with_compound_hash",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1740259876570,
-      "tag": "0002_add_hashes_tables",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1740318843041,
-      "tag": "0003_add_category_order_column",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1740324458398,
-      "tag": "0004_add_feeds_table",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1741954729934,
-      "tag": "0005_make_createdAt_notNull_for_feeds",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1741981375704,
-      "tag": "0006_change_metadata_from_json_to_jsonb",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1742333365853,
-      "tag": "0007_move_liked_to_feed_interactions",
+      "when": 1743192909503,
+      "tag": "0000_initial_migration",
       "breakpoints": true
     }
   ]

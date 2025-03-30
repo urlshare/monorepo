@@ -1,10 +1,6 @@
 import { CATEGORY_ID_LENGTH, generateCategoryId } from "@workspace/category/id/generate-category-id";
 import { CATEGORY_NAME_MAX_LENGTH } from "@workspace/category/name/category-name.schema";
 import { FEED_ID_LENGTH, generateFeedId } from "@workspace/feed/id/generate-feed-id";
-import {
-  FEED_INTERACTION_ID_LENGTH,
-  generateFeedInteractionId,
-} from "@workspace/feed-interaction/id/generate-feed-interaction-id";
 import { generateRequestId, REQUEST_ID_LENGTH } from "@workspace/request/id/generate-request-id";
 import { generateUrlId, URL_ID_LENGTH } from "@workspace/url/id/generate-url-id";
 import { API_KEY_LENGTH, generateApiKey } from "@workspace/user/api-key/generate-api-key";
@@ -20,9 +16,6 @@ describe("data lengths check", () => {
 
     expect(generateFeedId()).toHaveLength(27);
     expect(FEED_ID_LENGTH).toEqual(27);
-
-    expect(generateFeedInteractionId()).toHaveLength(31);
-    expect(FEED_INTERACTION_ID_LENGTH).toEqual(31);
 
     expect(generateCategoryId()).toHaveLength(26);
     expect(CATEGORY_ID_LENGTH).toEqual(26);

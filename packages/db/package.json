@@ -28,7 +28,6 @@
     "@workspace/category": "workspace:*",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/feed": "workspace:*",
-    "@workspace/feed-interaction": "workspace:*",
     "@workspace/metadata": "workspace:*",
     "@workspace/request": "workspace:*",
     "@workspace/url": "workspace:*",

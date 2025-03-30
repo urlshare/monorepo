@@ -1,5 +1,5 @@
 {
-  "id": "bc116d5a-ef03-4733-b5c6-2d245549614d",
+  "id": "8c66815a-8e14-4e6c-9746-9776cff8cdbd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -90,6 +90,206 @@
           ]
         }
       },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.urlshare_feed_interactions": {
+      "name": "urlshare_feed_interactions",
+      "schema": "",
+      "columns": {
+        "feed_id": {
+          "name": "feed_id",
+          "type": "char(27)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "liked": {
+          "name": "liked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "urlshare_feed_interactions_feed_id_index": {
+          "name": "urlshare_feed_interactions_feed_id_index",
+          "columns": [
+            {
+              "expression": "feed_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "urlshare_feed_interactions_user_id_index": {
+          "name": "urlshare_feed_interactions_user_id_index",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "urlshare_feed_interactions_feed_id_urlshare_feeds_id_fk": {
+          "name": "urlshare_feed_interactions_feed_id_urlshare_feeds_id_fk",
+          "tableFrom": "urlshare_feed_interactions",
+          "tableTo": "urlshare_feeds",
+          "columnsFrom": [
+            "feed_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "urlshare_feed_interactions_user_id_urlshare_users_id_fk": {
+          "name": "urlshare_feed_interactions_user_id_urlshare_users_id_fk",
+          "tableFrom": "urlshare_feed_interactions",
+          "tableTo": "urlshare_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "urlshare_feed_interactions_feed_id_user_id_pk": {
+          "name": "urlshare_feed_interactions_feed_id_user_id_pk",
+          "columns": [
+            "feed_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.urlshare_feeds": {
+      "name": "urlshare_feeds",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(27)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_url_id": {
+          "name": "user_url_id",
+          "type": "char(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "urlshare_feeds_user_id_index": {
+          "name": "urlshare_feeds_user_id_index",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "urlshare_feeds_user_url_id_index": {
+          "name": "urlshare_feeds_user_url_id_index",
+          "columns": [
+            {
+              "expression": "user_url_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "urlshare_feeds_user_id_urlshare_users_id_fk": {
+          "name": "urlshare_feeds_user_id_urlshare_users_id_fk",
+          "tableFrom": "urlshare_feeds",
+          "tableTo": "urlshare_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "urlshare_feeds_user_url_id_urlshare_users_urls_id_fk": {
+          "name": "urlshare_feeds_user_url_id_urlshare_users_urls_id_fk",
+          "tableFrom": "urlshare_feeds",
+          "tableTo": "urlshare_users_urls",
+          "columnsFrom": [
+            "user_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -199,6 +399,110 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.urlshare_url_hashes": {
+      "name": "urlshare_url_hashes",
+      "schema": "",
+      "columns": {
+        "compound_hash": {
+          "name": "compound_hash",
+          "type": "char(64)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "url_hash": {
+          "name": "url_hash",
+          "type": "char(40)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {
+        "urlshare_url_hashes_url_hash_index": {
+          "name": "urlshare_url_hashes_url_hash_index",
+          "columns": [
+            {
+              "expression": "url_hash",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "urlshare_url_hashes_compound_hash_urlshare_urls_compound_hash_fk": {
+          "name": "urlshare_url_hashes_compound_hash_urlshare_urls_compound_hash_fk",
+          "tableFrom": "urlshare_url_hashes",
+          "tableTo": "urlshare_urls",
+          "columnsFrom": [
+            "compound_hash"
+          ],
+          "columnsTo": [
+            "compound_hash"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "urlshare_url_hashes_compound_hash_url_hash_unique": {
+          "name": "urlshare_url_hashes_compound_hash_url_hash_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "compound_hash",
+            "url_hash"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.urlshare_url_hashes_compound_hashes_counts": {
+      "name": "urlshare_url_hashes_compound_hashes_counts",
+      "schema": "",
+      "columns": {
+        "url_hash": {
+          "name": "url_hash",
+          "type": "char(40)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "compound_hashes_count": {
+          "name": "compound_hashes_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.urlshare_urls": {
       "name": "urlshare_urls",
       "schema": "",
@@ -228,29 +532,29 @@
           "primaryKey": false,
           "notNull": true
         },
-        "url_hash": {
-          "name": "url_hash",
-          "type": "char(40)",
+        "compound_hash": {
+          "name": "compound_hash",
+          "type": "char(64)",
           "primaryKey": false,
           "notNull": true
         },
         "metadata": {
           "name": "metadata",
-          "type": "json",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": true,
-          "default": "'{}'::json"
+          "default": "'{}'::jsonb"
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "urlshare_urls_url_hash_unique": {
-          "name": "urlshare_urls_url_hash_unique",
+        "urlshare_urls_compound_hash_unique": {
+          "name": "urlshare_urls_compound_hash_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "url_hash"
+            "compound_hash"
           ]
         }
       },
@@ -398,6 +702,12 @@
         "category_id": {
           "name": "category_id",
           "type": "char(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category_order": {
+          "name": "category_order",
+          "type": "smallint",
           "primaryKey": false,
           "notNull": true
         },
