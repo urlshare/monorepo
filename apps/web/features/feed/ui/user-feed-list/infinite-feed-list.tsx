@@ -1,9 +1,9 @@
+import { User } from "@supabase/supabase-js";
 import { FC, useEffect, useRef } from "react";
 
+import { FeedVM } from "../../models/feed.vm";
 import { LoadingFeed } from "../loading-feed";
 import { FeedList } from "./feed-list";
-import { User } from "@supabase/supabase-js";
-import { FeedVM } from "../../models/feed.vm";
 
 export interface InfiniteFeedListProps {
   feed: ReadonlyArray<FeedVM>;

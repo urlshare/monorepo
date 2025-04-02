@@ -42,6 +42,8 @@ export default async function Page({
     orderBy: (categories, { asc }) => asc(categories.name),
   });
 
+  const canFollow = Boolean(user?.id) && userProfile.id !== user?.id;
+
   return (
     <>
       <div className="inline-block w-1/4">Left</div>
@@ -62,7 +64,7 @@ export default async function Page({
         </main>
       </div>
       <div className="inline-block w-1/4">
-        <UserProfileCard publicUserProfileData={userProfile} />
+        <UserProfileCard publicUserProfileData={userProfile} canFollow={canFollow} />
       </div>
     </>
   );

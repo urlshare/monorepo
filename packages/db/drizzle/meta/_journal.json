@@ -8,6 +8,41 @@
       "when": 1743192909503,
       "tag": "0000_initial_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1743363650948,
+      "tag": "0001_rename_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743363757421,
+      "tag": "0002_rename_table_again",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1743454851827,
+      "tag": "0003_remove_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1743454873666,
+      "tag": "0004_create_interactions_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1743534251841,
+      "tag": "0005_provide_correct_reference",
+      "breakpoints": true
     }
   ]
 }

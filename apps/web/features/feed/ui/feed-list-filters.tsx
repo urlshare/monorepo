@@ -1,8 +1,10 @@
-import { CategoryVM } from "@/features/category/models/category.vm";
 import { UserProfile } from "@workspace/db/types";
 import { FC } from "react";
-import { UserFeedSourceSelector } from "./user-feed-source-selector";
+
+import { CategoryVM } from "@/features/category/models/category.vm";
 import { CategoriesSelector } from "@/features/category/ui/categories-selector";
+
+import { UserFeedSourceSelector } from "./user-feed-source-selector";
 
 type FeedListFiltersProps = {
   username: UserProfile["username"];

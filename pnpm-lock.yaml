@@ -321,9 +321,6 @@ importers:
       '@workspace/feed':
         specifier: workspace:*
         version: link:../feed
-      '@workspace/feed-interaction':
-        specifier: workspace:*
-        version: link:../feed-interaction
       '@workspace/metadata':
         specifier: workspace:*
         version: link:../metadata
@@ -398,22 +395,6 @@ importers:
         version: 8.25.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2)
 
   packages/feed:
-    dependencies:
-      '@workspace/shared':
-        specifier: workspace:*
-        version: link:../shared
-      zod:
-        specifier: ^3.24.2
-        version: 3.24.2
-    devDependencies:
-      '@workspace/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-
-  packages/feed-interaction:
     dependencies:
       '@workspace/shared':
         specifier: workspace:*

@@ -1,10 +1,11 @@
+import { sha1 } from "@workspace/crypto/hash";
 import { db, orm, schema } from "@workspace/db/db";
+import type { Url, UserUrl } from "@workspace/db/types";
 import { compressMetadata } from "@workspace/metadata/compression";
 import { type UserId } from "@workspace/user/id/user-id.schema";
-import { type AddUrlRequestBody } from "./request-body.schema";
+
 import { createCompoundHash } from "./compound-hash";
-import { sha1 } from "@workspace/crypto/hash";
-import type { Url, UserUrl } from "@workspace/db/types";
+import { type AddUrlRequestBody } from "./request-body.schema";
 
 interface Params {
   categoryIds: AddUrlRequestBody["categoryIds"];
@@ -33,7 +34,7 @@ export const addUrl: AddUrl = async ({ categoryIds, metadata, userId }) => {
     orderBy: (follows, { asc }) => [asc(follows.createdAt)],
   });
 
-  return await db.transaction(async (tx) => {
+  const result = await db.transaction(async (tx) => {
     let urlId: Url["id"];
 
     if (maybeUrl) {
@@ -129,4 +130,6 @@ export const addUrl: AddUrl = async ({ categoryIds, metadata, userId }) => {
 
     return userUrl;
   });
+
+  return result;
 };

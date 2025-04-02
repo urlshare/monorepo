@@ -1,12 +1,14 @@
 import { TRPCError } from "@trpc/server";
+import { orm, schema } from "@workspace/db/db";
+
+import { protectedProcedure } from "@/server/api/trpc";
 
 import { toggleFollowUserSchema } from "./toggle-follow-user.schema";
-import { orm, schema } from "@workspace/db/db";
-import { protectedProcedure } from "@/server/api/trpc";
 
 type ToggleFollowUserResult = {
   status: "following" | "unfollowed";
   userId: schema.User["id"];
+  followersCount: schema.UserProfile["followersCount"];
 };
 
 export const toggleFollowUser = protectedProcedure
@@ -27,56 +29,77 @@ export const toggleFollowUser = protectedProcedure
         const notFollowing = Boolean(maybeFollowing) === false;
 
         if (notFollowing) {
-          await db.transaction(async (tx) => {
-            await tx.insert(schema.follows).values({
-              followerId,
-              followingId,
-            });
+          const { followersCount } = await db.transaction(async (tx) => {
+            const [[followers]] = await Promise.all([
+              tx
+                .update(schema.userProfiles)
+                .set({
+                  followersCount: orm.sql`${schema.userProfiles.followersCount} + 1`,
+                })
+                .where(orm.eq(schema.userProfiles.userId, followingId))
+                .returning({
+                  followersCount: schema.userProfiles.followersCount,
+                }),
 
-            await tx
-              .update(schema.userProfiles)
-              .set({
-                followingCount: orm.sql`${schema.userProfiles.followingCount} + 1`,
-              })
-              .where(orm.eq(schema.userProfiles.userId, followerId));
+              tx.insert(schema.follows).values({
+                followerId,
+                followingId,
+              }),
 
-            await tx
-              .update(schema.userProfiles)
-              .set({
-                followersCount: orm.sql`${schema.userProfiles.followersCount} + 1`,
-              })
-              .where(orm.eq(schema.userProfiles.userId, followingId));
+              tx
+                .update(schema.userProfiles)
+                .set({
+                  followingCount: orm.sql`${schema.userProfiles.followingCount} + 1`,
+                })
+                .where(orm.eq(schema.userProfiles.userId, followerId)),
+            ]);
+
+            return {
+              followersCount: followers?.followersCount as schema.UserProfile["followersCount"],
+            };
           });
 
           logger.info({ requestId, path, followerId, followingId }, "Followed user.");
 
-          return { status: "following", userId: followingId };
+          return { status: "following", userId: followingId, followersCount };
         } else {
-          await db.transaction(async (tx) => {
-            await tx
-              .delete(schema.follows)
-              .where(
-                orm.and(orm.eq(schema.follows.followerId, followerId), orm.eq(schema.follows.followingId, followingId)),
-              );
+          const { followersCount } = await db.transaction(async (tx) => {
+            const [[followers]] = await Promise.all([
+              tx
+                .update(schema.userProfiles)
+                .set({
+                  followersCount: orm.sql`${schema.userProfiles.followersCount} - 1`,
+                })
+                .where(orm.eq(schema.userProfiles.userId, followingId))
+                .returning({
+                  followersCount: schema.userProfiles.followersCount,
+                }),
 
-            await tx
-              .update(schema.userProfiles)
-              .set({
-                followingCount: orm.sql`${schema.userProfiles.followingCount} - 1`,
-              })
-              .where(orm.eq(schema.userProfiles.userId, followerId));
+              tx
+                .delete(schema.follows)
+                .where(
+                  orm.and(
+                    orm.eq(schema.follows.followerId, followerId),
+                    orm.eq(schema.follows.followingId, followingId),
+                  ),
+                ),
 
-            await tx
-              .update(schema.userProfiles)
-              .set({
-                followersCount: orm.sql`${schema.userProfiles.followersCount} - 1`,
-              })
-              .where(orm.eq(schema.userProfiles.userId, followingId));
+              tx
+                .update(schema.userProfiles)
+                .set({
+                  followingCount: orm.sql`${schema.userProfiles.followingCount} - 1`,
+                })
+                .where(orm.eq(schema.userProfiles.userId, followerId)),
+            ]);
+
+            return {
+              followersCount: followers?.followersCount as schema.UserProfile["followersCount"],
+            };
           });
 
           logger.info({ requestId, path, followerId, followingId }, "Unfollowed user.");
 
-          return { status: "unfollowed", userId: followingId };
+          return { status: "unfollowed", userId: followingId, followersCount };
         }
       } catch (error) {
         logger.error({ requestId, path, followerId, followingId, error }, "Failed to (un)follow a user.");

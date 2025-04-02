@@ -1,15 +1,14 @@
+import { User } from "@workspace/db/types";
+import { Button } from "@workspace/ui/components/button";
+import { toast } from "@workspace/ui/components/sonner";
 import Link from "next/link";
-
-import { FC, useCallback, useState, useEffect } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 
 import { FeedVM } from "../../models/feed.vm";
 import { DropdownOptions } from "./dropdown-options";
 import { EditFeedItemModal, OnSuccess } from "./edit-feed-item-modal";
 import { FeedListItem } from "./feed-list-item";
 import { NotLikedIcon, ToggleLikeUrl } from "./toggle-like-url";
-import { User } from "@workspace/db/types";
-import { toast } from "@workspace/ui/components/sonner";
-import { Button } from "@workspace/ui/components/button";
 
 export interface FeedListProps {
   feed: ReadonlyArray<FeedVM>;
@@ -69,7 +68,11 @@ export const FeedList: FC<FeedListProps> = ({ feed, viewerId }) => {
                 interactions={
                   <>
                     {canLikeUrl ? (
-                      <ToggleLikeUrl feedId={feedItem.id} liked={feedItem.url.liked} likes={feedItem.url.likesCount} />
+                      <ToggleLikeUrl
+                        userUrlId={feedItem.userUrlId}
+                        liked={feedItem.url.liked}
+                        likes={feedItem.url.likesCount}
+                      />
                     ) : (
                       <button
                         className="flex items-center gap-1.5 rounded-xl p-2 text-sm hover:bg-red-50"

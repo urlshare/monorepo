@@ -1,6 +1,5 @@
-import { CompressedMetadata, decompressMetadata, Metadata } from "@workspace/metadata/compression";
-
 import { Category, Feed, Url, UserProfile, UserUrl } from "@workspace/db/types";
+import { CompressedMetadata, decompressMetadata, Metadata } from "@workspace/metadata/compression";
 
 type RawFeedEntry = {
   user_username: UserProfile["username"] | null;
@@ -8,7 +7,7 @@ type RawFeedEntry = {
   user_imageUrl: UserProfile["imageUrl"] | null;
   feed_id: Feed["id"];
   feed_createdAt: Feed["createdAt"];
-  feed_liked: Feed["liked"];
+  userUrl_liked: boolean;
   url_url: Url["url"] | null;
   url_metadata: CompressedMetadata | null;
   url_likesCount: UserUrl["likesCount"] | null;
@@ -32,7 +31,7 @@ export const toFeedVM = (entry: RawFeedEntry): FeedVM => {
       url: entry.url_url as string,
       metadata: decompressMetadata(entry.url_metadata as CompressedMetadata),
       likesCount: entry.url_likesCount as UserUrl["likesCount"],
-      liked: entry.feed_liked,
+      liked: entry.userUrl_liked || false,
       categoryNames: entry.category_names ? entry.category_names.split(",") : [],
     },
     userUrlId: entry.userUrl_id,
@@ -52,7 +51,7 @@ export type FeedVM = {
   url: {
     url: Url["url"];
     metadata: Metadata;
-    liked: Feed["liked"];
+    liked: boolean;
     likesCount: UserUrl["likesCount"];
     categoryNames: Category["name"][];
   };

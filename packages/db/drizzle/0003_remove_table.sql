@@ -1,0 +1,1 @@
+DROP TABLE "urlshare_users_urls_interactions" CASCADE;

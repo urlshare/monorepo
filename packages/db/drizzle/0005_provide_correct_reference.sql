@@ -1,0 +1,3 @@
+ALTER TABLE "urlshare_users_urls_interactions" DROP CONSTRAINT "urlshare_users_urls_interactions_user_url_id_urlshare_feeds_id_fk";
+--> statement-breakpoint
+ALTER TABLE "urlshare_users_urls_interactions" ADD CONSTRAINT "urlshare_users_urls_interactions_user_url_id_urlshare_users_urls_id_fk" FOREIGN KEY ("user_url_id") REFERENCES "public"."urlshare_users_urls"("id") ON DELETE cascade ON UPDATE no action;

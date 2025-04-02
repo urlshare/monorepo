@@ -45,6 +45,7 @@ export const AddUrl: FC<AddUrlProps> = ({ apiKey, url, metadata }) => {
   )
 
   const addUrl = useCallback(() => {
+    console.log("Adding URL", { metadata, selectedCategories })
     mutate({ metadata, categoryIds: selectedCategories })
   }, [mutate, metadata, selectedCategories])
 

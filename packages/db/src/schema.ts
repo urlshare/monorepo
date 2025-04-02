@@ -11,11 +11,11 @@ import { InferSelectModel, relations, sql } from "drizzle-orm";
 import {
   bigint,
   bigserial,
-  boolean,
   char,
   index,
   integer,
   jsonb,
+  pgEnum,
   pgTableCreator,
   primaryKey,
   smallint,
@@ -246,25 +246,23 @@ export const feeds = createTable(
 
 export type Feed = InferSelectModel<typeof feeds>;
 
-export const feedInteractions = createTable(
-  "feed_interactions",
+export const interactionTypeEnum = pgEnum("interactionType", ["LIKED"]);
+
+export const usersUrlsInteractions = createTable(
+  "users_urls_interactions",
   {
-    feedId: char("feed_id", { length: FEED_ID_LENGTH })
+    userUrlId: char("user_url_id", { length: USER_URL_ID_LENGTH })
       .notNull()
-      .references(() => feeds.id, { onDelete: "cascade" }),
+      .references(() => usersUrls.id, { onDelete: "cascade" }),
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    liked: boolean("liked").default(false).notNull(),
+    interactionType: interactionTypeEnum().notNull(),
   },
-  (table) => [
-    primaryKey({ columns: [table.feedId, table.userId] }),
-    index().on(table.feedId),
-    index().on(table.userId),
-  ],
+  (table) => [primaryKey({ columns: [table.userUrlId, table.userId, table.interactionType] })],
 );
 
-export type FeedInteraction = InferSelectModel<typeof feedInteractions>;
+export type UserUrlInteraction = InferSelectModel<typeof usersUrlsInteractions>;
 
 export const feedsRelations = relations(feeds, ({ one }) => ({
   users: one(users, {

@@ -1,6 +1,7 @@
 "use client";
 
 import { schema } from "@workspace/db/db";
+import { UserProfile } from "@workspace/db/types";
 import { Button } from "@workspace/ui/components/button";
 import { LoadingIndicator } from "@workspace/ui/components/loading-indicator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@workspace/ui/components/tooltip";
@@ -11,9 +12,10 @@ import { api } from "@/trpc/react";
 
 interface ToggleFollowUserProps {
   userId: schema.User["id"];
+  onFollowToggle?: (followersCount: UserProfile["followersCount"]) => void;
 }
 
-export const ToggleFollowUser: FC<ToggleFollowUserProps> = ({ userId }) => {
+export const ToggleFollowUser: FC<ToggleFollowUserProps> = ({ userId, onFollowToggle }) => {
   const { data: isFollowingCheck, isSuccess: isDoneChecking } = api.followUser.isFollowingUser.useQuery({ userId });
   const [isFollowing, setIsFollowing] = useState<boolean>();
 
@@ -26,6 +28,7 @@ export const ToggleFollowUser: FC<ToggleFollowUserProps> = ({ userId }) => {
   const { mutate: toggle, isPending: isToggling } = api.followUser.toggleFollowUser.useMutation({
     onSuccess(input) {
       setIsFollowing(input.status === "following");
+      onFollowToggle?.(input.followersCount);
 
       utils.followUser.isFollowingUser.invalidate({ userId: input.userId });
     },

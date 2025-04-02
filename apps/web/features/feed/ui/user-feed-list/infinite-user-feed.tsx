@@ -1,18 +1,19 @@
 "use client";
 
+import { User } from "@supabase/supabase-js";
 import { InfiniteData } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import qs from "qs";
 import { FC } from "react";
 
-import { InfiniteFeedList } from "./infinite-feed-list";
-import { User } from "@supabase/supabase-js";
-import { feedSourceSchema } from "../../shared/feed-source";
-import { LoadingFeed } from "../loading-feed";
-import { ErrorLoadingFeed } from "../error-loading-feed";
+import { api } from "@/trpc/react";
+
 import { FeedVM } from "../../models/feed.vm";
 import { GetUserFeedResponse } from "../../router/procedures/get-user-feed";
-import { api } from "@/trpc/react";
+import { feedSourceSchema } from "../../shared/feed-source";
+import { ErrorLoadingFeed } from "../error-loading-feed";
+import { LoadingFeed } from "../loading-feed";
+import { InfiniteFeedList } from "./infinite-feed-list";
 
 const aggregateFeeds = (data?: InfiniteData<GetUserFeedResponse>) => {
   if (!data) {
@@ -64,11 +65,9 @@ export const InfiniteUserFeed: FC<InfiniteUserFeedProps> = ({ userId, from, view
   const feed = aggregateFeeds(data);
   const shouldLoadMore = Boolean(getNextCursor(data));
 
-  console.log({ feed });
-
   if (feed.length === 0) {
     return (
-      <div className="rounded rounded-xl bg-gray-50 p-10">
+      <div className="rounded-xl bg-gray-50 p-10">
         <h2 className="text-md font-bold">No URLs yet. Add some!</h2>
       </div>
     );

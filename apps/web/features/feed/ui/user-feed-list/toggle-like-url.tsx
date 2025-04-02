@@ -1,19 +1,20 @@
-import { api } from "@/trpc/react";
-import { Feed } from "@workspace/db/types";
+import { UserUrl } from "@workspace/db/types";
 import { toast } from "@workspace/ui/components/sonner";
 import { Heart } from "lucide-react";
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
+
+import { api } from "@/trpc/react";
 
 type ToggleLikeUrlProps = {
-  feedId: Feed["id"];
+  userUrlId: UserUrl["id"];
   liked: boolean;
   likes: number;
 };
 
 const LikedIcon = () => <Heart fill="#dc2626" color="#dc2626" size={18} strokeWidth={1} />;
-export const NotLikedIcon = () => <Heart size={18} strokeWidth={1} />;
+export const NotLikedIcon = (): ReactNode => <Heart size={18} strokeWidth={1} />;
 
-export const ToggleLikeUrl: FC<ToggleLikeUrlProps> = ({ feedId, liked, likes }) => {
+export const ToggleLikeUrl: FC<ToggleLikeUrlProps> = ({ userUrlId, liked, likes }) => {
   const [isLiked, setIsLiked] = useState(liked);
   const [likesCount, setLikesCount] = useState(likes);
 
@@ -44,7 +45,7 @@ export const ToggleLikeUrl: FC<ToggleLikeUrlProps> = ({ feedId, liked, likes }) 
         const newOptimisticUpdateLikesCount = isLiked ? likesCount - 1 : likesCount + 1;
 
         setLikesCount(newOptimisticUpdateLikesCount);
-        toggle({ feedId });
+        toggle({ userUrlId });
       }}
     >
       {isLiked ? isToggling ? <NotLikedIcon /> : <LikedIcon /> : isToggling ? <LikedIcon /> : <NotLikedIcon />}

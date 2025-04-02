@@ -1,56 +1,109 @@
 import { TRPCError } from "@trpc/server";
+import { orm, schema } from "@workspace/db/db";
+import { UserUrl } from "@workspace/db/types";
+
+import { protectedProcedure } from "@/server/api/trpc";
 
 import { toggleLikeUrlSchema } from "./toggle-like-url.schema";
-import { Feed, UserUrl } from "@workspace/db/types";
-import { protectedProcedure } from "@/server/api/trpc";
-import { schema, orm } from "@workspace/db/db";
 
 type ToggleLikeUrlResult = {
   status: "liked" | "unliked";
   likesCount: UserUrl["likesCount"];
-  feedId: Feed["id"];
+  userUrlId: UserUrl["id"];
 };
 
 type UrlNotFound = {
   status: "notFound";
-  feedId: Feed["id"];
+  userUrlId: UserUrl["id"];
 };
 
 export const toggleLikeUrl = protectedProcedure
   .input(toggleLikeUrlSchema)
-  .mutation<UrlNotFound | ToggleLikeUrlResult>(async ({ input: { feedId }, ctx: { logger, requestId, user, db } }) => {
+  .mutation<
+    UrlNotFound | ToggleLikeUrlResult
+  >(async ({ input: { userUrlId }, ctx: { logger, requestId, user, db } }) => {
     const path = "likeUrl.toggleLikeUrl";
     const userId = user.id;
 
-    logger.info({ requestId, path, userId, feedId }, "Toggle liking the URL.");
+    logger.info({ requestId, path, userId, userUrlId }, "Toggle liking the URL.");
 
     try {
-      const [maybeFeed] = await db
+      const [maybeUserUrl] = await db
         .select({
-          liked: schema.feeds.liked,
-          userId: schema.feeds.userId,
-          userUrlId: schema.feeds.userUrlId,
-          authorId: schema.usersUrls.userId,
+          urlCreatorId: schema.usersUrls.userId,
+          likesCount: schema.usersUrls.likesCount,
         })
-        .from(schema.feeds)
-        .leftJoin(schema.usersUrls, orm.eq(schema.feeds.userUrlId, schema.usersUrls.id))
-        .where(orm.eq(schema.feeds.id, feedId))
+        .from(schema.usersUrls)
+        .where(orm.eq(schema.usersUrls.id, userUrlId))
         .limit(1);
 
-      const feedNotFound = maybeFeed === undefined;
-
-      if (feedNotFound) {
-        return { status: "notFound", feedId };
+      if (!maybeUserUrl) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User URL not found.",
+          cause: new Error("User URL not found."),
+        });
       }
 
-      const idOfProfileOwningTheUrl = maybeFeed.authorId;
+      const idOfProfileOwningTheUrl = maybeUserUrl.urlCreatorId;
 
-      if (idOfProfileOwningTheUrl === null) {
-        throw new Error("The URL author ID is null.");
-      }
+      const [maybeUserUrlInteraction] = await db
+        .select()
+        .from(schema.usersUrlsInteractions)
+        .where(
+          orm.and(
+            orm.eq(schema.usersUrlsInteractions.userUrlId, userUrlId),
+            orm.eq(schema.usersUrlsInteractions.userId, userId),
+            orm.eq(schema.usersUrlsInteractions.interactionType, "LIKED"),
+          ),
+        )
+        .limit(1);
 
-      // Liking
-      if (!maybeFeed.liked) {
+      if (maybeUserUrlInteraction) {
+        // Liked, unliking
+        const likesCount = await db.transaction(async (tx) => {
+          const [[result]] = await Promise.all([
+            tx
+              .update(schema.usersUrls)
+              .set({
+                likesCount: orm.sql`${schema.usersUrls.likesCount} - 1`,
+              })
+              .where(orm.eq(schema.usersUrls.id, userUrlId))
+              .returning({ likesCount: schema.usersUrls.likesCount }),
+
+            tx
+              .update(schema.userProfiles)
+              .set({
+                likedCount: orm.sql`${schema.userProfiles.likedCount} - 1`,
+              })
+              .where(orm.eq(schema.userProfiles.userId, idOfProfileOwningTheUrl)),
+
+            tx
+              .update(schema.userProfiles)
+              .set({
+                likesCount: orm.sql`${schema.userProfiles.likesCount} - 1`,
+              })
+              .where(orm.eq(schema.userProfiles.userId, userId)),
+
+            tx
+              .delete(schema.usersUrlsInteractions)
+              .where(
+                orm.and(
+                  orm.eq(schema.usersUrlsInteractions.userUrlId, userUrlId),
+                  orm.eq(schema.usersUrlsInteractions.userId, userId),
+                  orm.eq(schema.usersUrlsInteractions.interactionType, "LIKED"),
+                ),
+              ),
+          ]);
+
+          return result?.likesCount as number;
+        });
+
+        logger.info({ requestId, path, userId, userUrlId }, "Unliked the URL.");
+
+        return { status: "unliked", userUrlId, likesCount };
+      } else {
+        // not liked, liking
         const likesCount = await db.transaction(async (tx) => {
           const [[result]] = await Promise.all([
             tx
@@ -58,7 +111,7 @@ export const toggleLikeUrl = protectedProcedure
               .set({
                 likesCount: orm.sql`${schema.usersUrls.likesCount} + 1`,
               })
-              .where(orm.eq(schema.usersUrls.id, maybeFeed.userUrlId))
+              .where(orm.eq(schema.usersUrls.id, userUrlId))
               .returning({ likesCount: schema.usersUrls.likesCount }),
 
             tx
@@ -75,67 +128,30 @@ export const toggleLikeUrl = protectedProcedure
               })
               .where(orm.eq(schema.userProfiles.userId, userId)),
 
-            tx
-              .update(schema.feeds)
-              .set({
-                liked: true,
-              })
-              .where(orm.eq(schema.feeds.id, feedId)),
+            tx.insert(schema.usersUrlsInteractions).values({
+              userUrlId,
+              userId,
+              interactionType: "LIKED",
+            }),
           ]);
 
           return result?.likesCount as number;
         });
 
-        logger.info({ requestId, path, userId, feedId }, "Liked the URL.");
+        logger.info({ requestId, path, userId, userUrlId }, "Liked the URL.");
 
-        return { status: "liked", feedId, likesCount };
+        return { status: "liked", userUrlId, likesCount };
       }
-
-      // Unliking
-      const likesCount = await db.transaction(async (tx) => {
-        const [[result]] = await Promise.all([
-          tx
-            .update(schema.usersUrls)
-            .set({
-              likesCount: orm.sql`${schema.usersUrls.likesCount} - 1`,
-            })
-            .where(orm.eq(schema.usersUrls.id, maybeFeed.userUrlId))
-            .returning({ likesCount: schema.usersUrls.likesCount }),
-
-          tx
-            .update(schema.userProfiles)
-            .set({
-              likedCount: orm.sql`${schema.userProfiles.likedCount} - 1`,
-            })
-            .where(orm.eq(schema.userProfiles.userId, idOfProfileOwningTheUrl)),
-
-          tx
-            .update(schema.userProfiles)
-            .set({
-              likesCount: orm.sql`${schema.userProfiles.likesCount} - 1`,
-            })
-            .where(orm.eq(schema.userProfiles.userId, userId)),
-
-          tx
-            .update(schema.feeds)
-            .set({
-              liked: false,
-            })
-            .where(orm.eq(schema.feeds.id, feedId)),
-        ]);
-
-        return result?.likesCount as number;
-      });
-
-      logger.info({ requestId, path, userId, feedId }, "Unliked the URL.");
-
-      return { status: "unliked", feedId, likesCount };
     } catch (error) {
-      logger.error({ requestId, path, userId, feedId, error }, "Failed to (un)like a URL.");
+      logger.error({ requestId, path, userId, userUrlId, error }, "Failed to (un)like a URL.");
+
+      if (error instanceof TRPCError) {
+        throw error;
+      }
 
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to (un)the URL. Try again.",
+        message: "Failed to (un)like the URL. Try again.",
         cause: error,
       });
     }

@@ -1,3 +1,5 @@
+import { Category } from "@workspace/db/types";
+import { Button } from "@workspace/ui/components/button";
 import {
   Dialog,
   DialogContent,
@@ -6,20 +8,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@workspace/ui/components/dialog";
-
+import { LoadingIndicator } from "@workspace/ui/components/loading-indicator";
+import { cn } from "@workspace/ui/lib/utils";
 import { FC, useCallback, useEffect, useState } from "react";
 
-import { CategoryVM } from "../../../category/models/category.vm";
+import { api } from "@/trpc/react";
 
+import { CategoryVM } from "../../../category/models/category.vm";
 import { useCategoriesStore } from "../../../category/stores/use-categories-store";
 import { CategoryPickerCategoriesList } from "../../../category/ui/category-picker/category-picker-categories-list";
-
 import { FeedVM } from "../../models/feed.vm";
-import { Category } from "@workspace/db/types";
-import { api } from "@/trpc/react";
-import { LoadingIndicator } from "@workspace/ui/components/loading-indicator";
-import { Button } from "@workspace/ui/components/button";
-import { cn } from "@workspace/ui/lib/utils";
 
 export type OnSuccess = (categoryNames: Category["name"][]) => void;
 

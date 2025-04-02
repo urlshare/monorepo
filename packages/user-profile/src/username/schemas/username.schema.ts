@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const USERNAME_ALPHABET = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ1234567890_";
+export const USERNAME_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ1234567890_";
 export const USERNAME_MAX_LENGTH = 15;
 
 export type UsernameSchema = z.infer<typeof usernameSchema>;

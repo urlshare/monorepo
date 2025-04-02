@@ -1,10 +1,11 @@
 "use client";
 
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { FC, useCallback } from "react";
-import { feedSources, feedSourceSchema, FeedSourceValue } from "../shared/feed-source";
-import { cn } from "@workspace/ui/lib/utils";
 import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
+import { cn } from "@workspace/ui/lib/utils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FC, useCallback } from "react";
+
+import { feedSources, feedSourceSchema, FeedSourceValue } from "../shared/feed-source";
 
 type UserFeedSourceSelectorProps = {
   className?: string;

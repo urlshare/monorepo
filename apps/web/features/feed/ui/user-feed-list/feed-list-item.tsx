@@ -1,13 +1,14 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
+import { Button } from "@workspace/ui/components/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { Calendar, Image as ImageIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { FC, ReactNode } from "react";
 
+import { LogoIcon } from "@/components/logo";
+
 import { UserImage } from "../../../user/ui/user-image";
 import { FeedVM } from "../../models/feed.vm";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@workspace/ui/components/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
-import { LogoIcon } from "@/components/logo";
-import { Button } from "@workspace/ui/components/button";
 
 type FeedListItemProps = {
   feedItem: FeedVM;
@@ -27,7 +28,7 @@ export const FeedListItem: FC<FeedListItemProps> = ({ feedItem, interactions, op
   const isSomethingElse = !isAnImage && !isAWebsite;
 
   return (
-    <Card className="overflow-hidden shadow hover:shadow-lg">
+    <Card className="overflow-hidden rounded-sm shadow hover:shadow-lg">
       <CardHeader className="relative cursor-pointer">
         <CardTitle className="flex items-center gap-3">
           {isAnImage && <ImageIcon strokeWidth={1} size={40} className="text-slate-400" aria-label="Image icon" />}
@@ -44,12 +45,13 @@ export const FeedListItem: FC<FeedListItemProps> = ({ feedItem, interactions, op
             href={url.url}
             title={url.metadata.data.title}
             target="_blank"
-            className="overflow-hidden text-ellipsis leading-7 leading-snug decoration-slate-200 group-hover:underline"
+            className="overflow-hidden text-ellipsis leading-7 decoration-slate-200 group-hover:underline"
+            rel="noreferrer"
           >
             {url.metadata.data.title || url.url}
           </a>
         </CardTitle>
-        <span className="text-secondary flex flex-row items-center gap-1 pl-12 text-xs text-slate-400">
+        <span className="flex flex-row items-center gap-1 pl-12 text-xs text-slate-400">
           <Calendar size={13} />
           <span>{createdAt.toLocaleString()}</span>
         </span>
@@ -58,7 +60,7 @@ export const FeedListItem: FC<FeedListItemProps> = ({ feedItem, interactions, op
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-3 top-1 h-7 w-7 rounded rounded-full text-slate-400 hover:text-slate-600"
+              className="absolute right-3 top-1 h-7 w-7 rounded text-slate-400 hover:text-slate-600"
             >
               <MoreHorizontal size={16} />
             </Button>
@@ -73,7 +75,8 @@ export const FeedListItem: FC<FeedListItemProps> = ({ feedItem, interactions, op
               href={url.url}
               title={url.metadata.data.title}
               target="_blank"
-              className="flex max-h-80 place-content-center overflow-hidden rounded rounded-md"
+              className="flex max-h-80 place-content-center overflow-hidden"
+              rel="noreferrer"
             >
               <img src={url.metadata.data.imageUrl} alt={url.metadata.data.title} className="object-cover" />
             </a>

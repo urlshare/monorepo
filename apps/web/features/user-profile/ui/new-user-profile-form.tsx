@@ -1,23 +1,25 @@
 "use client";
 
-import { A } from "@/components/a";
-import { api } from "@/trpc/react";
-import { generateApiKey } from "@workspace/user/api-key/generate-api-key";
-import { useForm } from "react-hook-form";
-import { createUserProfileSchema, CreateUserProfileSchema } from "../router/procedures/create-user-profile.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useEffect, useState } from "react";
-import { usernameCheckSchema } from "../router/procedures/username-check.schema";
-import debounce from "debounce";
-import { cn } from "@workspace/ui/lib/utils";
-import { REPOSITORY_URL, WEB_APP_DOMAIN } from "@/lib/constants";
-import { Separator } from "@workspace/ui/components/separator";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@workspace/ui/components/form";
-import { AtSign, Info, KeyRound, RefreshCcw, UserCheck2, UserX2 } from "lucide-react";
-import { Input } from "@workspace/ui/components/input";
-import { CopyToClipboard } from "@/components/copy-to-clipboard";
 import { Button } from "@workspace/ui/components/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@workspace/ui/components/form";
+import { Input } from "@workspace/ui/components/input";
+import { Separator } from "@workspace/ui/components/separator";
+import { cn } from "@workspace/ui/lib/utils";
+import { generateApiKey } from "@workspace/user/api-key/generate-api-key";
+import debounce from "debounce";
+import { AtSign, Info, KeyRound, RefreshCcw, UserCheck2, UserX2 } from "lucide-react";
 import Link from "next/link";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { A } from "@/components/a";
+import { CopyToClipboard } from "@/components/copy-to-clipboard";
+import { REPOSITORY_URL, WEB_APP_DOMAIN } from "@/lib/constants";
+import { api } from "@/trpc/react";
+
+import { CreateUserProfileSchema, createUserProfileSchema } from "../router/procedures/create-user-profile.schema";
+import { usernameCheckSchema } from "../router/procedures/username-check.schema";
 
 interface FormValues {
   username: string;
